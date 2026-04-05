@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Summary — ALS Consulting Bias Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Bias Assessment
+    </a>
+    <div class="als-steps">
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--active"></div>
+    </div>
+  </nav>
+
+  <main class="als-screen">
+    <div class="als-container als-container--narrow">
+
+      <h1 class="als-screen__title">Your summary report</h1>
+      <p class="als-screen__sub">
+        For internal use only. This report is not a certified audit document
+        and cannot be used for regulatory compliance purposes.
+      </p>
+
+      <!-- PRINT / DOWNLOAD CONTROLS -->
+      <div class="als-card" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="als-btn als-btn--primary" style="flex:1;min-width:160px" onclick="window.print()">
+          Save as PDF &nbsp;↓
+        </button>
+        <button class="als-btn als-btn--secondary" style="flex:1;min-width:160px"
+                onclick="window.location.href='screen-7.html'">
+          ← Back to recommendations
+        </button>
+      </div>
+      <p class="als-text-xs als-text-muted als-text-center als-mt-sm">
+        Use your browser's Print → Save as PDF option to download
+      </p>
+
+      <div class="als-divider"></div>
+
+      <!-- REPORT DOCUMENT -->
+      <div id="report" class="als-watermark">
+
+        <!-- REPORT HEADER -->
+        <div style="background:var(--als-navy);border-radius:12px 12px 0 0;
+                    padding:24px 28px;margin-bottom:0">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="color:rgba(255,255,255,0.5);font-size:10px;font-weight:700;
+                          letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px">
+                ALS Consulting &nbsp;·&nbsp; AI Governance & HR Compliance
+              </div>
+              <div style="color:white;font-size:18px;font-weight:800;line-height:1.2">
+                Algorithmic Bias Self-Assessment
+              </div>
+              <div style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:4px"
+                   id="report-company"></div>
+            </div>
+            <div style="text-align:right">
+              <div style="color:rgba(255,255,255,0.5);font-size:10px">Assessment date</div>
+              <div style="color:white;font-size:12px;font-weight:600" id="report-date"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WATERMARK NOTICE -->
+        <div style="background:#fff3e0;border:0.5px solid #f0d080;
+                    padding:8px 28px;text-align:center">
+          <span style="font-size:11px;font-weight:700;color:#7a4a00;letter-spacing:0.06em">
+            INTERNAL USE ONLY &nbsp;·&nbsp; NOT AUDIT CERTIFIED &nbsp;·&nbsp;
+            NOT LEGALLY SUFFICIENT FOR REGULATORY COMPLIANCE
+          </span>
+        </div>
+
+        <!-- RISK RESULT -->
+        <div style="background:var(--als-white);border:0.5px solid var(--als-border);
+                    border-top:none;padding:20px 28px">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;
+                      margin-bottom:16px">
+            <div style="font-size:13px;font-weight:700;color:var(--als-text-primary)">
+              Overall risk determination
+            </div>
+            <span class="als-badge" id="report-badge">—</span>
+          </div>
+
+          <div style="font-size:12px;color:var(--als-text-muted);line-height:1.6;margin-bottom:16px"
+               id="report-determination"></div>
+
+          <!-- STATS ROW -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+            <div style="background:var(--als-surface);border-radius:6px;padding:10px 12px">
+              <div class="als-text-xs als-text-muted">Total applicants</div>
+              <div style="font-size:18px;font-weight:700;color:var(--als-text-primary)"
+                   id="report-total">—</div>
+            </div>
+            <div style="background:var(--als-surface);border-radius:6px;padding:10px 12px">
+              <div class="als-text-xs als-text-muted">Adverse groups</div>
+              <div style="font-size:18px;font-weight:700" id="report-adverse-count">—</div>
+            </div>
+            <div style="background:var(--als-surface);border-radius:6px;padding:10px 12px">
+              <div class="als-text-xs als-text-muted">Threshold</div>
+              <div style="font-size:18px;font-weight:700;color:var(--als-text-primary)">0.80</div>
+            </div>
+          </div>
+
+          <!-- GROUP TABLE -->
+          <div style="font-size:12px;font-weight:700;color:var(--als-text-primary);
+                      margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">
+            Impact ratios by group
+          </div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead>
+              <tr style="background:var(--als-navy)">
+                <th style="padding:8px 10px;text-align:left;color:white;font-weight:600;
+                           border-radius:4px 0 0 0">Group</th>
+                <th style="padding:8px 10px;text-align:center;color:white;font-weight:600">
+                  Applicants</th>
+                <th style="padding:8px 10px;text-align:center;color:white;font-weight:600">
+                  Impact ratio</th>
+                <th style="padding:8px 10px;text-align:center;color:white;font-weight:600;
+                           border-radius:0 4px 0 0">Determination</th>
+              </tr>
+            </thead>
+            <tbody id="report-table"></tbody>
+          </table>
+
+          <!-- EXCLUDED -->
+          <div id="report-excluded" class="als-hidden" style="margin-top:12px">
+            <div style="font-size:11px;color:var(--als-text-muted)">
+              <strong>Excluded groups (below 2% threshold per NYC LL144):</strong>
+              <span id="report-excluded-list"></span>
+            </div>
+          </div>
+
+          <!-- JURISDICTIONS -->
+          <div style="margin-top:16px">
+            <div style="font-size:12px;font-weight:700;color:var(--als-text-primary);
+                        margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">
+              Jurisdictions assessed
+            </div>
+            <div id="report-jurisdictions" style="display:flex;flex-direction:column;gap:4px"></div>
+          </div>
+
+          <!-- LEGAL NOTICE -->
+          <div style="margin-top:20px;padding:12px 14px;background:var(--als-surface);
+                      border-radius:6px;border-left:3px solid var(--als-navy)">
+            <div style="font-size:11px;font-weight:700;color:var(--als-text-primary);margin-bottom:3px">
+              Legal notice
+            </div>
+            <div style="font-size:11px;color:var(--als-text-muted);line-height:1.5">
+              This self-assessment report is not a certified bias audit and does not constitute
+              legal compliance under NYC Local Law 144, Colorado SB205, the EU AI Act, or any
+              other applicable regulation. An independent auditor must certify results for
+              regulatory purposes. This report is provided for internal review only and may not
+              be published as a compliance document.
+              &copy; 2026 ALS Consulting &nbsp;·&nbsp; alsconsulting.netlify.app
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FINAL CTA -->
+      <div class="als-card als-text-center" style="margin-top:20px">
+        <p style="font-size:13px;font-weight:700;color:var(--als-text-primary);margin-bottom:8px">
+          Ready to make this report legally sufficient?
+        </p>
+        <a href="https://calendly.com/astargill-ih3e/30min" target="_blank"
+           class="als-btn als-btn--cta" style="text-decoration:none">
+          Book your audit consultation &nbsp;→
+        </a>
+        <p class="als-text-xs als-text-muted" style="margin-top:8px">
+          Starting at $3,200 &nbsp;·&nbsp; ALS Consulting independent bias audit
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">&copy; 2026 ALS Consulting</p>
+  </footer>
+
+<script>
+  const client  = JSON.parse(sessionStorage.getItem("als_client") || "{}");
+  const results = JSON.parse(sessionStorage.getItem("als_results") || "{}");
+
+  if (!results.riskScore) window.location.href = "screen-1.html";
+
+  const { riskScore, jurisdictionFlags, meta } = results;
+  const isHigh = riskScore.riskLevel === "HIGH";
+
+  // Header
+  document.getElementById("report-company").textContent =
+    `${client.company || "Unknown company"} &nbsp;·&nbsp; ${client.firstName || ""} ${client.lastName || ""}`;
+  document.getElementById("report-date").textContent =
+    new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+  // Badge
+  const badge = document.getElementById("report-badge");
+  badge.textContent = isHigh ? "ADVERSE IMPACT INDICATED" : "NO ADVERSE IMPACT INDICATED";
+  badge.classList.add(isHigh ? "als-badge--adverse" : "als-badge--compliant");
+
+  // Stats
+  document.getElementById("report-determination").textContent = riskScore.determination;
+  document.getElementById("report-total").textContent = meta.totalApplicants || "—";
+  const adverseCount = document.getElementById("report-adverse-count");
+  adverseCount.textContent = riskScore.adverseGroups.length;
+  adverseCount.style.color = riskScore.adverseGroups.length > 0
+    ? "var(--als-adverse)" : "var(--als-compliant)";
+
+  // Table
+  const allGroups = [
+    ...riskScore.adverseGroups.map(g => ({ ...g, adverse: true })),
+    ...riskScore.compliantGroups.map(g => ({ ...g, adverse: false })),
+  ];
+
+  document.getElementById("report-table").innerHTML = allGroups.map((g, i) => `
+    <tr style="background:${i % 2 === 0 ? "var(--als-white)" : "var(--als-surface)"}">
+      <td style="padding:7px 10px;color:var(--als-text-primary);font-weight:500">${g.name}</td>
+      <td style="padding:7px 10px;text-align:center;color:var(--als-text-muted)">${g.total}</td>
+      <td style="padding:7px 10px;text-align:center;font-weight:700;
+                 color:${g.adverse ? "var(--als-adverse)" : "var(--als-compliant)"}">
+        ${g.impactRatio.toFixed(2)}
+      </td>
+      <td style="padding:7px 10px;text-align:center">
+        <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;
+                     background:${g.adverse ? "var(--als-adverse-bg)" : "var(--als-compliant-bg)"};
+                     color:${g.adverse ? "var(--als-adverse)" : "var(--als-compliant)"}">
+          ${g.adverse ? "ADVERSE IMPACT" : "COMPLIANT"}
+        </span>
+      </td>
+    </tr>
+  `).join("");
+
+  // Excluded
+  if (riskScore.excludedGroups && riskScore.excludedGroups.length > 0) {
+    document.getElementById("report-excluded").classList.remove("als-hidden");
+    document.getElementById("report-excluded-list").textContent =
+      " " + riskScore.excludedGroups.map(g => `${g.name} (${g.total})`).join("; ");
+  }
+
+  // Jurisdictions
+  document.getElementById("report-jurisdictions").innerHTML = (jurisdictionFlags || []).map(f => `
+    <div style="display:flex;justify-content:space-between;align-items:center;
+                padding:6px 10px;border-radius:5px;border:0.5px solid var(--als-border);
+                background:var(--als-surface)">
+      <span style="font-size:12px;font-weight:500;color:var(--als-text-primary)">${f.jurisdiction}</span>
+      <span style="font-size:10px;font-weight:700;
+                   color:${f.lane === "documentation" ? "var(--als-doc)" :
+                           !f.enforced ? "var(--als-monitor)" :
+                           f.riskLevel === "HIGH" ? "var(--als-adverse)" : "var(--als-compliant)"}">
+        ${f.lane === "documentation" ? "Documentation lane" :
+          !f.enforced ? "Pre-enforcement" :
+          f.riskLevel === "HIGH" ? "Adverse impact" : "Compliant"}
+      </span>
+    </div>
+  `).join("");
+</script>
+
+<style>
+@media print {
+  .als-nav, .als-footer, .als-btn, p.als-text-xs, .als-card:last-child { display: none !important; }
+  body { background: white; }
+  .als-screen { padding: 0; }
+  .als-container { max-width: 100%; padding: 0; }
+  #report { border: 1px solid #ccc; border-radius: 8px; overflow: hidden; }
+}
+</style>
+</body>
+</html>

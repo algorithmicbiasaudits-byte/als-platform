@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Data — ALS Consulting Bias Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Bias Assessment
+    </a>
+    <div class="als-steps">
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--active"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+    </div>
+  </nav>
+
+  <main class="als-screen">
+    <div class="als-container">
+
+      <h1 class="als-screen__title">Upload your applicant data</h1>
+      <p class="als-screen__sub">
+        Export your applicant outcomes from your ATS and upload the file below.
+        We accept CSV, TSV, and Excel files.
+      </p>
+
+      <!-- WHAT TO INCLUDE -->
+      <div class="als-card">
+        <p style="font-size:13px;font-weight:700;color:var(--als-text-primary);margin-bottom:12px">
+          Your file must include these columns
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="padding:10px 12px;background:var(--als-surface);border-radius:6px;
+                      border:0.5px solid var(--als-border)">
+            <div style="font-size:12px;font-weight:700;color:var(--als-text-primary)">Race / Ethnicity</div>
+            <div class="als-text-xs als-text-muted">EEO-1 categories required</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--als-surface);border-radius:6px;
+                      border:0.5px solid var(--als-border)">
+            <div style="font-size:12px;font-weight:700;color:var(--als-text-primary)">Sex / Gender</div>
+            <div class="als-text-xs als-text-muted">Male, Female, Nonbinary</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--als-surface);border-radius:6px;
+                      border:0.5px solid var(--als-border)">
+            <div style="font-size:12px;font-weight:700;color:var(--als-text-primary)">Outcome / Disposition</div>
+            <div class="als-text-xs als-text-muted">Selected or not selected</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--als-surface);border-radius:6px;
+                      border-left:3px solid var(--als-border);border-radius:6px;
+                      border:0.5px solid var(--als-border)">
+            <div style="font-size:12px;font-weight:700;color:var(--als-text-primary)">Score <span style="font-weight:400;color:var(--als-text-muted)">(if scored AEDT)</span></div>
+            <div class="als-text-xs als-text-muted">Numerical ranking score</div>
+          </div>
+        </div>
+        <div class="als-divider"></div>
+        <a href="../templates/als-data-template.csv" download
+           class="als-btn als-btn--ghost als-btn--sm" style="display:inline-flex;width:auto">
+          Download data template &nbsp;↓
+        </a>
+      </div>
+
+      <!-- UPLOAD ZONE -->
+      <div class="als-upload-zone" id="upload-zone" onclick="triggerUpload()">
+        <div class="als-upload-zone__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="als-upload-zone__title" id="upload-title">
+          Click to upload or drag and drop
+        </div>
+        <div class="als-upload-zone__sub">CSV, TSV, or Excel &nbsp;·&nbsp; Maximum 10MB</div>
+        <input type="file" id="file-input" accept=".csv,.tsv,.xlsx,.xls"
+               onchange="handleFileSelect(this.files[0])">
+      </div>
+
+      <!-- FILE INFO (shown after upload) -->
+      <div id="file-info" class="als-card als-hidden" style="margin-top:12px">
+        <div class="als-flex-between">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--als-text-primary)"
+                 id="file-name">filename.csv</div>
+            <div class="als-text-xs als-text-muted" id="file-meta">0 rows detected</div>
+          </div>
+          <button class="als-btn als-btn--secondary als-btn--sm" onclick="clearFile()">
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- PARSING ERROR -->
+      <div id="parse-error" class="als-alert als-alert--adverse als-hidden" style="margin-top:12px">
+        <div class="als-alert__title">Could not read file</div>
+        <span id="parse-error-detail"></span>
+      </div>
+
+      <!-- MISSING COLUMNS -->
+      <div id="column-errors" class="als-hidden" style="margin-top:12px">
+        <div class="als-alert als-alert--monitor">
+          <div class="als-alert__title">Required columns not detected</div>
+          <div id="column-error-list"></div>
+        </div>
+        <div class="als-card" style="margin-top:8px">
+          <p style="font-size:13px;font-weight:600;color:var(--als-text-primary);margin-bottom:10px">
+            Map your columns manually
+          </p>
+          <div id="column-mapper"></div>
+        </div>
+      </div>
+
+      <!-- CONTINUE -->
+      <div style="margin-top:20px">
+        <button class="als-btn als-btn--primary" id="btn-continue"
+                onclick="handleContinue()" disabled
+                style="opacity:0.5;cursor:not-allowed">
+          Validate data &nbsp;→
+        </button>
+        <p class="als-text-center als-text-xs als-text-muted als-mt-md">
+          Your data is processed in your browser. It is never stored on our servers.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">
+      &copy; 2026 ALS Consulting &nbsp;·&nbsp;
+      <a href="https://alsconsulting.netlify.app" class="als-footer__link">alsconsulting.netlify.app</a>
+    </p>
+  </footer>
+
+<script src="../assets/csv-parser.js"></script>
+<script>
+  let parsedData = null;
+
+  // Guard — redirect if no session
+  if (!sessionStorage.getItem("als_client")) {
+    window.location.href = "screen-1.html";
+  }
+
+  function triggerUpload() {
+    document.getElementById("file-input").click();
+  }
+
+  // Drag and drop
+  const zone = document.getElementById("upload-zone");
+  zone.addEventListener("dragover", e => { e.preventDefault(); zone.classList.add("dragover"); });
+  zone.addEventListener("dragleave", () => zone.classList.remove("dragover"));
+  zone.addEventListener("drop", e => {
+    e.preventDefault();
+    zone.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileSelect(file);
+  });
+
+  async function handleFileSelect(file) {
+    if (!file) return;
+
+    document.getElementById("upload-title").textContent = "Processing...";
+    document.getElementById("parse-error").classList.add("als-hidden");
+    document.getElementById("column-errors").classList.add("als-hidden");
+
+    const result = await parseFile(file);
+
+    if (result.error) {
+      document.getElementById("parse-error-detail").textContent = result.error;
+      document.getElementById("parse-error").classList.remove("als-hidden");
+      document.getElementById("upload-title").textContent = "Click to upload or drag and drop";
+      return;
+    }
+
+    if (result.validationErrors && result.validationErrors.length > 0) {
+      showColumnErrors(result);
+      return;
+    }
+
+    // Success
+    parsedData = result;
+    document.getElementById("upload-title").textContent = "File uploaded successfully";
+    document.getElementById("file-name").textContent = file.name;
+    document.getElementById("file-meta").textContent =
+      `${result.totalRows} rows detected · ${result.applicants.length} applicants parsed`;
+    document.getElementById("file-info").classList.remove("als-hidden");
+
+    const btn = document.getElementById("btn-continue");
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
+  }
+
+  function showColumnErrors(result) {
+    document.getElementById("column-errors").classList.remove("als-hidden");
+    const list = document.getElementById("column-error-list");
+    list.innerHTML = result.validationErrors
+      .map(e => `<div style="margin-top:4px">· ${e.message}</div>`)
+      .join("");
+
+    // Build manual mapper
+    const mapper = document.getElementById("column-mapper");
+    const fields = ["race_ethnicity", "sex_gender", "outcome", "score"];
+    const labels = { race_ethnicity: "Race / Ethnicity", sex_gender: "Sex / Gender",
+                     outcome: "Outcome / Disposition", score: "Score (optional)" };
+    mapper.innerHTML = fields.map(f => `
+      <div class="als-form-group">
+        <label class="als-label">${labels[f]}</label>
+        <select class="als-select" id="map-${f}">
+          <option value="">— select column —</option>
+          ${result.detectedColumns.map(c =>
+            `<option value="${c}" ${result.columnMapping[f] === c ? "selected" : ""}>${c}</option>`
+          ).join("")}
+        </select>
+      </div>
+    `).join("");
+  }
+
+  function clearFile() {
+    parsedData = null;
+    document.getElementById("file-input").value = "";
+    document.getElementById("file-info").classList.add("als-hidden");
+    document.getElementById("upload-title").textContent = "Click to upload or drag and drop";
+    const btn = document.getElementById("btn-continue");
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
+  }
+
+  function handleContinue() {
+    if (!parsedData) return;
+    sessionStorage.setItem("als_data", JSON.stringify(parsedData));
+    window.location.href = "screen-3.html";
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommendations — ALS Consulting Bias Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Bias Assessment
+    </a>
+    <div class="als-steps">
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--active"></div>
+      <div class="als-step"></div>
+    </div>
+  </nav>
+
+  <main class="als-screen">
+    <div class="als-container">
+
+      <h1 class="als-screen__title">Preliminary recommendations</h1>
+      <p class="als-screen__sub">
+        Based on your assessment results. These are starting points — not a substitute
+        for a certified independent audit or legal counsel.
+      </p>
+
+      <div class="als-rec-list" id="rec-list">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="als-alert als-alert--monitor">
+        <div class="als-alert__title">These recommendations are intentionally incomplete</div>
+        A full remediation roadmap requires an independent auditor who can review your
+        specific AEDT, your data, and your organizational context. These recommendations
+        identify the shape of the problem — not the complete solution.
+      </div>
+
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+        <button class="als-btn als-btn--primary"
+                onclick="window.location.href='screen-8.html'">
+          Download your summary report &nbsp;→
+        </button>
+        <a href="https://calendly.com/astargill-ih3e/30min" target="_blank"
+           class="als-btn als-btn--cta" style="text-decoration:none">
+          Book your free compliance review &nbsp;→
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">&copy; 2026 ALS Consulting</p>
+  </footer>
+
+<script>
+  const results = JSON.parse(sessionStorage.getItem("als_results") || "{}");
+  const client  = JSON.parse(sessionStorage.getItem("als_client") || "{}");
+
+  if (!results.riskScore) window.location.href = "screen-1.html";
+
+  const { riskScore, jurisdictionFlags } = results;
+  const isHigh = riskScore.riskLevel === "HIGH";
+
+  // Build recommendations based on results
+  const recs = [];
+
+  if (isHigh) {
+    // Rec 1 — commission independent audit
+    recs.push({
+      title: "Commission an independent bias audit immediately",
+      body: "Your self-assessment indicates adverse impact. Under NYC LL144 and other applicable laws, " +
+            "you must have an independent auditor certify your results before continuing to use your AEDT. " +
+            "Using an AEDT without a current certified audit exposes your organization to civil penalties " +
+            "starting at $500 per day.",
+      jurisdictions: jurisdictionFlags
+        .filter(f => f.riskLevel === "HIGH" && f.lane === "calculation")
+        .map(f => f.jurisdiction),
+    });
+
+    // Rec 2 — identify highest-risk groups
+    const worstGroup = riskScore.adverseGroups
+      .sort((a, b) => a.impactRatio - b.impactRatio)[0];
+    if (worstGroup) {
+      recs.push({
+        title: `Investigate selection criteria for ${worstGroup.name}`,
+        body: `This group has an impact ratio of ${worstGroup.impactRatio.toFixed(2)} — ` +
+              `significantly below the four-fifths rule threshold of 0.80. ` +
+              `Review the specific screening criteria, knockout questions, and scoring logic ` +
+              `that affect this group's selection rate. Document your findings before your audit.`,
+        jurisdictions: ["NYC Local Law 144", "EEOC Uniform Guidelines"],
+      });
+    }
+
+    // Rec 3 — candidate notification
+    recs.push({
+      title: "Implement candidate notification procedures",
+      body: "Under NYC LL144 and Colorado SB205, candidates must be notified at least 10 business days " +
+            "before an AEDT is used to evaluate them. They must also be given the opportunity to " +
+            "request an alternative selection process. Review your current notification procedures " +
+            "and update job postings and ATS communications accordingly.",
+      jurisdictions: ["NYC Local Law 144", "Colorado SB 205"],
+    });
+
+  } else {
+    // LOW risk recs
+    recs.push({
+      title: "Certify your results with an independent auditor",
+      body: "Your self-assessment shows no adverse impact — but this assessment alone is not legally " +
+            "sufficient. Under NYC LL144 and applicable regulations, you must have an independent " +
+            "auditor certify your results annually and publish a summary on your careers website. " +
+            "Do not assume a passing self-assessment satisfies the legal requirement.",
+      jurisdictions: ["NYC Local Law 144"],
+    });
+
+    recs.push({
+      title: "Establish an annual audit schedule",
+      body: "NYC LL144 requires a bias audit no more than 12 months prior to AEDT use. " +
+            "Set a recurring annual audit date and document it in your AI governance policy. " +
+            "Any significant update to your AEDT may require a new audit before the 12 months elapses.",
+      jurisdictions: ["NYC Local Law 144", "Colorado SB 205"],
+    });
+  }
+
+  // Rec — public posting
+  const hasNYC = (jurisdictionFlags || []).some(f => f.jurisdiction === "NYC Local Law 144");
+  if (hasNYC) {
+    recs.push({
+      title: "Publish your audit summary on your careers website",
+      body: "NYC LL144 requires you to make the date of your most recent bias audit and a summary " +
+            "of results publicly available on the employment section of your website. " +
+            "This must be done within the audit period and updated annually. " +
+            "ALS Consulting provides a formatted public summary as part of every audit engagement.",
+      jurisdictions: ["NYC Local Law 144"],
+    });
+  }
+
+  // Rec — Colorado readiness
+  const hasColorado = (jurisdictionFlags || []).some(f =>
+    f.jurisdiction === "Colorado SB 205" && !f.enforced);
+  if (hasColorado) {
+    recs.push({
+      title: "Document your AI risk management policy before June 30, 2026",
+      body: "Colorado SB205 takes effect June 30, 2026. It requires deployers of high-risk AI systems " +
+            "to implement a documented risk management policy. Start building this documentation now " +
+            "so you are not scrambling at the enforcement date. The NIST AI Risk Management Framework " +
+            "is a recognized standard that supports compliance across multiple jurisdictions.",
+      jurisdictions: ["Colorado SB 205"],
+    });
+  }
+
+  // Render
+  document.getElementById("rec-list").innerHTML = recs.map((rec, i) => `
+    <div class="als-rec-item">
+      <div class="als-rec-item__number">${String(i + 1).padStart(2, "0")}</div>
+      <div class="als-rec-item__content">
+        <div class="als-rec-item__title">${rec.title}</div>
+        <div class="als-rec-item__body">${rec.body}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">
+          ${rec.jurisdictions.map(j =>
+            `<span class="als-rec-item__jurisdiction">${j}</span>`
+          ).join("")}
+        </div>
+      </div>
+    </div>
+  `).join("");
+</script>
+</body>
+</html>

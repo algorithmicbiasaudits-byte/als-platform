@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validate Data — ALS Consulting Bias Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Bias Assessment
+    </a>
+    <div class="als-steps">
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--active"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+    </div>
+  </nav>
+
+  <main class="als-screen">
+    <div class="als-container">
+
+      <h1 class="als-screen__title">Validating your data</h1>
+      <p class="als-screen__sub">
+        We are checking your dataset before running the analysis.
+        All checks must pass before we can calculate your risk score.
+      </p>
+
+      <!-- STATS -->
+      <div class="als-stats-grid" id="stats-grid" style="margin-bottom:20px">
+        <div class="als-stat">
+          <div class="als-stat__label">Total applicants</div>
+          <div class="als-stat__value" id="stat-total">—</div>
+        </div>
+        <div class="als-stat">
+          <div class="als-stat__label">Race groups found</div>
+          <div class="als-stat__value" id="stat-race">—</div>
+        </div>
+        <div class="als-stat">
+          <div class="als-stat__label">Sex groups found</div>
+          <div class="als-stat__value" id="stat-sex">—</div>
+        </div>
+      </div>
+
+      <!-- VALIDATION CHECKS -->
+      <div class="als-validation-list" id="validation-list">
+        <div class="als-validation-item">
+          <div class="als-validation-item__dot" style="background:var(--als-border)"></div>
+          <span>Running checks...</span>
+        </div>
+      </div>
+
+      <!-- EXCLUSIONS NOTE -->
+      <div id="exclusions-block" class="als-hidden">
+        <div class="als-alert als-alert--monitor">
+          <div class="als-alert__title">Some groups will be excluded from calculations</div>
+          <div id="exclusions-list"></div>
+          <div style="margin-top:6px;font-size:11px">
+            Per NYC Local Law 144, groups representing less than 2% of the dataset
+            are excluded from calculations. This is a legal protection, not an error.
+            Excluded groups are logged in your results.
+          </div>
+        </div>
+      </div>
+
+      <!-- WARNINGS -->
+      <div id="warnings-block" class="als-hidden">
+        <div class="als-alert als-alert--monitor" style="margin-top:8px">
+          <div class="als-alert__title">Data warnings</div>
+          <div id="warnings-list"></div>
+        </div>
+      </div>
+
+      <!-- HARD ERRORS -->
+      <div id="errors-block" class="als-hidden">
+        <div class="als-alert als-alert--adverse" style="margin-top:8px">
+          <div class="als-alert__title">Validation failed — cannot proceed</div>
+          <div id="errors-list"></div>
+        </div>
+        <button class="als-btn als-btn--secondary" style="margin-top:12px;width:auto;padding:0 20px"
+                onclick="window.location.href='screen-2.html'">
+          ← Go back and fix data
+        </button>
+      </div>
+
+      <!-- CONTINUE -->
+      <div style="margin-top:20px">
+        <button class="als-btn als-btn--primary" id="btn-run"
+                onclick="runAnalysis()" disabled style="opacity:0.5;cursor:not-allowed">
+          Run bias analysis &nbsp;→
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">&copy; 2026 ALS Consulting</p>
+  </footer>
+
+<script>
+  const client = JSON.parse(sessionStorage.getItem("als_client") || "{}");
+  const data   = JSON.parse(sessionStorage.getItem("als_data") || "{}");
+
+  if (!client.selectedJurisdictions || !data.applicants) {
+    window.location.href = "screen-1.html";
+  }
+
+  const applicants = data.applicants || [];
+  const EXCLUSION_THRESHOLD = 0.02;
+
+  function runValidation() {
+    const checks = [];
+    const errors = [];
+    const warnings = [];
+
+    // Check 1: Minimum sample size
+    const minSample = 30;
+    if (applicants.length >= minSample) {
+      checks.push({ status: "ok", text: `Sample size: ${applicants.length} applicants (minimum ${minSample} recommended)` });
+    } else if (applicants.length >= 10) {
+      checks.push({ status: "warn", text: `Sample size: ${applicants.length} applicants — below ${minSample} recommended. Results may have limited statistical confidence.` });
+      warnings.push(`Small dataset (${applicants.length} rows). Consider expanding the audit period.`);
+    } else {
+      checks.push({ status: "error", text: `Sample size: ${applicants.length} applicants — too small for meaningful analysis. Minimum 10 required.` });
+      errors.push("Dataset is too small for analysis. Upload at least 10 applicant records.");
+    }
+
+    // Check 2: Race/ethnicity completeness
+    const missingRace = applicants.filter(a => !a.race_ethnicity).length;
+    const racePct = ((applicants.length - missingRace) / applicants.length * 100).toFixed(0);
+    if (missingRace === 0) {
+      checks.push({ status: "ok", text: `Race/ethnicity: 100% complete (${applicants.length} records)` });
+    } else if (missingRace / applicants.length < 0.1) {
+      checks.push({ status: "warn", text: `Race/ethnicity: ${racePct}% complete — ${missingRace} records missing` });
+      warnings.push(`${missingRace} records are missing race/ethnicity data and will be excluded from calculations.`);
+    } else {
+      checks.push({ status: "error", text: `Race/ethnicity: ${racePct}% complete — too many missing values` });
+      errors.push("More than 10% of records are missing race/ethnicity data. Results would not be reliable.");
+    }
+
+    // Check 3: Sex/gender completeness
+    const missingSex = applicants.filter(a => !a.sex_gender).length;
+    const sexPct = ((applicants.length - missingSex) / applicants.length * 100).toFixed(0);
+    if (missingSex === 0) {
+      checks.push({ status: "ok", text: `Sex/gender: 100% complete (${applicants.length} records)` });
+    } else if (missingSex / applicants.length < 0.1) {
+      checks.push({ status: "warn", text: `Sex/gender: ${sexPct}% complete — ${missingSex} records missing` });
+      warnings.push(`${missingSex} records are missing sex/gender data and will be excluded from sex calculations.`);
+    } else {
+      checks.push({ status: "error", text: `Sex/gender: ${sexPct}% complete — too many missing values` });
+      errors.push("More than 10% of records are missing sex/gender data.");
+    }
+
+    // Check 4: Outcome field
+    const validOutcomes = applicants.filter(a => a.outcome === "selected" || a.outcome === "not_selected").length;
+    if (validOutcomes === applicants.length) {
+      checks.push({ status: "ok", text: `Outcome field: all ${applicants.length} records have valid values` });
+    } else {
+      const invalid = applicants.length - validOutcomes;
+      checks.push({ status: "warn", text: `Outcome field: ${invalid} records have unrecognized values — mapped to "not selected"` });
+      warnings.push(`${invalid} outcome values were not recognized and defaulted to "not selected".`);
+    }
+
+    // Check 5: Group size / exclusions
+    const raceGroups = {};
+    applicants.forEach(a => {
+      if (a.race_ethnicity) {
+        raceGroups[a.race_ethnicity] = (raceGroups[a.race_ethnicity] || 0) + 1;
+      }
+    });
+
+    const excluded = Object.entries(raceGroups)
+      .filter(([, count]) => count / applicants.length < EXCLUSION_THRESHOLD);
+
+    const qualifying = Object.entries(raceGroups)
+      .filter(([, count]) => count / applicants.length >= EXCLUSION_THRESHOLD);
+
+    if (qualifying.length < 2) {
+      checks.push({ status: "error", text: `Race groups: fewer than 2 groups have enough data for comparison` });
+      errors.push("At least 2 race/ethnicity groups must have sufficient representation (2%+) to calculate impact ratios.");
+    } else {
+      checks.push({ status: "ok", text: `Race groups: ${qualifying.length} groups qualify for analysis (${excluded.length} excluded — below 2% threshold)` });
+    }
+
+    // Update UI
+    updateStats(raceGroups);
+    renderChecks(checks);
+    if (excluded.length > 0) renderExclusions(excluded, applicants.length);
+    if (warnings.length > 0) renderWarnings(warnings);
+    if (errors.length > 0) {
+      renderErrors(errors);
+    } else {
+      const btn = document.getElementById("btn-run");
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      btn.style.cursor = "pointer";
+    }
+  }
+
+  function updateStats(raceGroups) {
+    document.getElementById("stat-total").textContent = applicants.length;
+    document.getElementById("stat-race").textContent = Object.keys(raceGroups).length;
+    const sexGroups = new Set(applicants.map(a => a.sex_gender).filter(Boolean));
+    document.getElementById("stat-sex").textContent = sexGroups.size;
+  }
+
+  function renderChecks(checks) {
+    const list = document.getElementById("validation-list");
+    list.innerHTML = checks.map(c => `
+      <div class="als-validation-item als-validation-item--${c.status}">
+        <div class="als-validation-item__dot"></div>
+        <span style="font-size:13px">${c.text}</span>
+      </div>
+    `).join("");
+  }
+
+  function renderExclusions(excluded, total) {
+    document.getElementById("exclusions-block").classList.remove("als-hidden");
+    document.getElementById("exclusions-list").innerHTML = excluded
+      .map(([name, count]) =>
+        `<div style="margin-top:3px">· ${name}: ${count} applicants (${(count/total*100).toFixed(1)}% of dataset)</div>`
+      ).join("");
+  }
+
+  function renderWarnings(warnings) {
+    document.getElementById("warnings-block").classList.remove("als-hidden");
+    document.getElementById("warnings-list").innerHTML = warnings
+      .map(w => `<div style="margin-top:3px">· ${w}</div>`).join("");
+  }
+
+  function renderErrors(errors) {
+    document.getElementById("errors-block").classList.remove("als-hidden");
+    document.getElementById("errors-list").innerHTML = errors
+      .map(e => `<div style="margin-top:3px">· ${e}</div>`).join("");
+  }
+
+  function runAnalysis() {
+    window.location.href = "screen-5.html";
+  }
+
+  // Run on load
+  setTimeout(runValidation, 300);
+</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bias Assessment — ALS Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <!-- NAV -->
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Bias Assessment
+    </a>
+    <div class="als-steps">
+      <div class="als-step als-step--active"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+    </div>
+  </nav>
+
+  <!-- SCREEN BODY -->
+  <main class="als-screen">
+    <div class="als-container">
+
+      <h1 class="als-screen__title">Start your bias assessment</h1>
+      <p class="als-screen__sub">
+        Free &nbsp;·&nbsp; 10–15 minutes &nbsp;·&nbsp; Results delivered instantly &nbsp;·&nbsp;
+        Not legally sufficient as an independent audit
+      </p>
+
+      <form id="als-form-1" novalidate>
+
+        <!-- CONTACT INFO -->
+        <div class="als-card">
+          <div class="als-form-row">
+            <div class="als-form-group">
+              <label class="als-label" for="first-name">First name</label>
+              <input class="als-input" type="text" id="first-name" name="first_name"
+                     placeholder="Sarah" required autocomplete="given-name">
+            </div>
+            <div class="als-form-group">
+              <label class="als-label" for="last-name">Last name</label>
+              <input class="als-input" type="text" id="last-name" name="last_name"
+                     placeholder="Johnson" required autocomplete="family-name">
+            </div>
+          </div>
+          <div class="als-form-row">
+            <div class="als-form-group">
+              <label class="als-label" for="company">Company name</label>
+              <input class="als-input" type="text" id="company" name="company"
+                     placeholder="Acme Corporation" required autocomplete="organization">
+            </div>
+            <div class="als-form-group">
+              <label class="als-label" for="role">Your role</label>
+              <input class="als-input" type="text" id="role" name="role"
+                     placeholder="HR Director" required>
+            </div>
+          </div>
+          <div class="als-form-group">
+            <label class="als-label" for="email">Work email</label>
+            <input class="als-input" type="email" id="email" name="email"
+                   placeholder="sarah@company.com" required autocomplete="email">
+            <span class="als-text-xs als-text-muted als-mt-sm" style="display:block">
+              Your results will be sent here. We do not share your email with third parties.
+            </span>
+          </div>
+        </div>
+
+        <!-- AEDT OUTPUT TYPE -->
+        <div class="als-card">
+          <label class="als-label" style="display:block;margin-bottom:10px">
+            What type of output does your AI tool produce?
+          </label>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;
+                          padding:12px 14px;border:0.5px solid var(--als-border);
+                          border-radius:8px;background:var(--als-surface)" id="type-passfail-label">
+              <input type="radio" name="output_type" value="pass_fail" id="type-passfail"
+                     style="margin-top:2px;accent-color:var(--als-navy)" checked>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--als-text-primary)">
+                  Pass / Fail — selected or not selected
+                </div>
+                <div class="als-text-xs als-text-muted" style="margin-top:2px">
+                  Resume screeners, knockout filters, chatbot assessments
+                </div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;
+                          padding:12px 14px;border:0.5px solid var(--als-border);
+                          border-radius:8px;background:var(--als-surface)" id="type-scored-label">
+              <input type="radio" name="output_type" value="scored" id="type-scored"
+                     style="margin-top:2px;accent-color:var(--als-navy)">
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--als-text-primary)">
+                  Numerical score — candidates ranked by score
+                </div>
+                <div class="als-text-xs als-text-muted" style="margin-top:2px">
+                  HireVue, Pymetrics, candidate ranking tools
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- JURISDICTION SELECTION -->
+        <div class="als-card">
+          <label class="als-label" style="display:block;margin-bottom:4px">
+            Which jurisdictions apply to your organization?
+          </label>
+          <p class="als-text-xs als-text-muted" style="margin-bottom:14px">
+            Select all that apply. If unsure, select all and we will flag which are relevant.
+          </p>
+
+          <div class="als-jur-grid" id="jur-grid">
+
+            <div class="als-jur-card selected" data-jur="nyc_ll144" onclick="toggleJur(this)">
+              <div class="als-jur-card__name">NYC Local Law 144</div>
+              <div class="als-jur-card__status">Active &nbsp;·&nbsp; enforced since July 2023</div>
+            </div>
+
+            <div class="als-jur-card" data-jur="colorado_sb205" onclick="toggleJur(this)">
+              <div class="als-jur-card__name">Colorado SB 205</div>
+              <div class="als-jur-card__status als-jur-card__status--pending"
+                   id="co-countdown">Effective June 30, 2026</div>
+            </div>
+
+            <div class="als-jur-card" data-jur="illinois_aivia" onclick="toggleJur(this)">
+              <div class="als-jur-card__name">Illinois AIVIA</div>
+              <div class="als-jur-card__status">Active &nbsp;·&nbsp; video + text AI</div>
+            </div>
+
+            <div class="als-jur-card" data-jur="california_ab2930" onclick="toggleJur(this)">
+              <div class="als-jur-card__name">California CPRA + AB 2930</div>
+              <div class="als-jur-card__status als-jur-card__status--pending">
+                Active &nbsp;·&nbsp; legal challenge pending
+              </div>
+            </div>
+
+            <div class="als-jur-card" data-jur="eu_ai_act" onclick="toggleJur(this)">
+              <div class="als-jur-card__name">EU AI Act</div>
+              <div class="als-jur-card__status">Active &nbsp;·&nbsp; high-risk classification</div>
+            </div>
+
+            <div class="als-jur-card" data-jur="texas_traiga" onclick="toggleJur(this)">
+              <div class="als-jur-card__name">Texas TRAIGA</div>
+              <div class="als-jur-card__status als-jur-card__status--doc">
+                Documentation lane &nbsp;·&nbsp; intent-based
+              </div>
+            </div>
+
+          </div>
+
+          <div id="jur-error" class="als-alert als-alert--adverse als-hidden">
+            Please select at least one jurisdiction to continue.
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div id="form-error" class="als-alert als-alert--adverse als-hidden">
+          <div class="als-alert__title">Please complete all required fields</div>
+          <span id="form-error-detail"></span>
+        </div>
+
+        <button type="submit" class="als-btn als-btn--primary" id="btn-continue">
+          Continue to data upload &nbsp;→
+        </button>
+
+        <p class="als-text-center als-text-xs als-text-muted als-mt-md">
+          By continuing you agree that this assessment is for internal review only
+          and is not a substitute for an independent audit under applicable law.
+        </p>
+
+      </form>
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">
+      &copy; 2026 ALS Consulting &nbsp;·&nbsp;
+      <a href="https://alsconsulting.netlify.app" class="als-footer__link">alsconsulting.netlify.app</a>
+      &nbsp;·&nbsp; Winston-Salem, NC
+    </p>
+  </footer>
+
+<script>
+  // ── JURISDICTION TOGGLE ──────────────────────────────────────
+  function toggleJur(card) {
+    card.classList.toggle("selected");
+  }
+
+  // ── COLORADO COUNTDOWN ──────────────────────────────────────
+  function updateColoradoCountdown() {
+    const effective = new Date("2026-06-30");
+    const today = new Date();
+    const days = Math.ceil((effective - today) / (1000 * 60 * 60 * 24));
+    const el = document.getElementById("co-countdown");
+    if (days > 0) {
+      el.textContent = `Effective June 30, 2026 — ${days} days remaining`;
+    } else {
+      el.textContent = "Active · enforceable";
+      el.classList.remove("als-jur-card__status--pending");
+    }
+  }
+  updateColoradoCountdown();
+
+  // ── FORM SUBMIT ──────────────────────────────────────────────
+  document.getElementById("als-form-1").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const firstName   = document.getElementById("first-name").value.trim();
+    const lastName    = document.getElementById("last-name").value.trim();
+    const company     = document.getElementById("company").value.trim();
+    const role        = document.getElementById("role").value.trim();
+    const email       = document.getElementById("email").value.trim();
+    const outputType  = document.querySelector('input[name="output_type"]:checked').value;
+
+    const selectedJurs = [...document.querySelectorAll(".als-jur-card.selected")]
+      .map(c => c.dataset.jur);
+
+    // Validate
+    const errors = [];
+    if (!firstName) errors.push("First name is required.");
+    if (!lastName)  errors.push("Last name is required.");
+    if (!company)   errors.push("Company name is required.");
+    if (!role)      errors.push("Your role is required.");
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      errors.push("A valid work email is required.");
+    if (selectedJurs.length === 0) {
+      errors.push("Select at least one jurisdiction.");
+      document.getElementById("jur-error").classList.remove("als-hidden");
+    } else {
+      document.getElementById("jur-error").classList.add("als-hidden");
+    }
+
+    if (errors.length > 0) {
+      const errEl = document.getElementById("form-error");
+      document.getElementById("form-error-detail").textContent = errors[0];
+      errEl.classList.remove("als-hidden");
+      errEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    document.getElementById("form-error").classList.add("als-hidden");
+
+    // Save to sessionStorage and proceed
+    sessionStorage.setItem("als_client", JSON.stringify({
+      firstName, lastName, company, role, email,
+      outputType, selectedJurisdictions: selectedJurs,
+      startedAt: new Date().toISOString(),
+    }));
+
+    window.location.href = "screen-2.html";
+  });
+</script>
+</body>
+</html>

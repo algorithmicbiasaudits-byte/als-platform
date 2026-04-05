@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risk Score — ALS Consulting Bias Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Bias Assessment
+    </a>
+    <div class="als-steps">
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--done"></div>
+      <div class="als-step als-step--active"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+      <div class="als-step"></div>
+    </div>
+  </nav>
+
+  <!-- LOADING -->
+  <div id="loading-state" class="als-loading">
+    <div class="als-spinner"></div>
+    <p class="als-loading__text">Running bias analysis across all selected jurisdictions...</p>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div id="error-state" class="als-error-state als-hidden">
+    <div class="als-error-state__icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="#c0392b" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div class="als-error-state__title">Analysis could not complete</div>
+    <div class="als-error-state__body" id="error-detail">An unexpected error occurred.</div>
+    <button class="als-btn als-btn--secondary" style="width:auto;padding:0 20px"
+            onclick="window.location.href='screen-3.html'">← Go back</button>
+  </div>
+
+  <!-- RESULTS (hidden until engine returns) -->
+  <div id="results-state" class="als-hidden">
+
+    <!-- RISK HEADER -->
+    <div class="als-risk-header" id="risk-header">
+      <div class="als-risk-header__top">
+        <div>
+          <div class="als-risk-header__label">Assessment results</div>
+          <div class="als-risk-header__title" id="company-name">Your organization</div>
+        </div>
+        <span class="als-badge" id="risk-badge">—</span>
+      </div>
+
+      <!-- GAUGE -->
+      <div class="als-gauge">
+        <div class="als-gauge__bar">
+          <div class="als-gauge__fill" id="gauge-fill"></div>
+          <div class="als-gauge__threshold" title="Four-fifths rule threshold (0.80)"></div>
+        </div>
+        <div class="als-gauge__labels">
+          <span class="als-gauge__label-text">0.00 — no selection</span>
+          <span class="als-gauge__label-text">0.80 threshold</span>
+          <span class="als-gauge__label-text">1.00 — highest rate</span>
+        </div>
+      </div>
+
+      <!-- DETERMINATION -->
+      <div style="padding:0 0 16px">
+        <p style="color:rgba(255,255,255,0.7);font-size:12px;line-height:1.5"
+           id="determination-text"></p>
+      </div>
+    </div>
+
+    <!-- GROUP RESULTS -->
+    <div style="background:var(--als-white);padding:20px var(--als-gap-2xl) 8px">
+      <p style="font-size:12px;font-weight:700;color:var(--als-text-primary);margin-bottom:12px;
+                text-transform:uppercase;letter-spacing:0.04em">
+        Impact ratios by protected class group
+      </p>
+    </div>
+
+    <div class="als-groups-grid" id="groups-grid"></div>
+
+    <!-- INTERSECTIONAL RESULTS -->
+    <div id="intersectional-block" style="padding:0 var(--als-gap-2xl) 16px;background:var(--als-white)">
+      <p style="font-size:12px;font-weight:700;color:var(--als-text-primary);margin-bottom:10px;
+                text-transform:uppercase;letter-spacing:0.04em">
+        Intersectional analysis (required by NYC LL144)
+      </p>
+      <div id="intersectional-grid" class="als-groups-grid"
+           style="padding:0;grid-template-columns:1fr 1fr 1fr"></div>
+    </div>
+
+    <!-- EXCLUDED GROUPS -->
+    <div id="excluded-block" class="als-hidden"
+         style="padding:0 var(--als-gap-2xl) 16px;background:var(--als-white)">
+      <div class="als-alert als-alert--monitor">
+        <div class="als-alert__title">Groups excluded from calculations</div>
+        <div id="excluded-list"></div>
+        <div style="margin-top:4px;font-size:11px">
+          Per NYC LL144 — groups under 2% of dataset excluded. Logged in your results.
+        </div>
+      </div>
+    </div>
+
+    <!-- JURISDICTION FLAGS -->
+    <div style="background:var(--als-white);padding:16px var(--als-gap-2xl) 8px">
+      <p style="font-size:12px;font-weight:700;color:var(--als-text-primary);margin-bottom:10px;
+                text-transform:uppercase;letter-spacing:0.04em">
+        Jurisdiction exposure
+      </p>
+      <div class="als-jur-flags" id="jur-flags"></div>
+    </div>
+
+    <!-- COLORADO COUNTDOWN STRIP -->
+    <div id="co-strip" class="als-countdown-strip als-hidden">
+      <div class="als-countdown-strip__dot"></div>
+      <div class="als-countdown-strip__text" id="co-strip-text"></div>
+    </div>
+
+    <!-- CALIFORNIA MONITOR STRIP -->
+    <div id="ca-strip" class="als-hidden"
+         style="background:var(--als-doc-bg);border-top:0.5px solid var(--als-doc-bd);
+                padding:10px var(--als-gap-2xl);display:flex;gap:10px;align-items:flex-start">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--als-doc);
+                  flex-shrink:0;margin-top:4px"></div>
+      <div style="font-size:12px;color:var(--als-doc);line-height:1.5" id="ca-strip-text"></div>
+    </div>
+
+    <!-- CONTINUE -->
+    <div style="background:var(--als-white);padding:20px var(--als-gap-2xl)">
+      <button class="als-btn als-btn--primary"
+              onclick="window.location.href='screen-6.html'">
+        See your compliance requirements &nbsp;→
+      </button>
+    </div>
+
+  </div>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">&copy; 2026 ALS Consulting</p>
+  </footer>
+
+<script>
+  const client = JSON.parse(sessionStorage.getItem("als_client") || "{}");
+  const data   = JSON.parse(sessionStorage.getItem("als_data") || "{}");
+
+  if (!client.selectedJurisdictions || !data.applicants) {
+    window.location.href = "screen-1.html";
+  }
+
+  async function runEngineCall() {
+    try {
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          selectedJurisdictions: client.selectedJurisdictions,
+          outputType: client.outputType,
+          applicants: data.applicants,
+        }),
+      });
+
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+      const result = await response.json();
+      if (result.error) throw new Error(result.error);
+
+      sessionStorage.setItem("als_results", JSON.stringify(result));
+      displayResults(result);
+
+    } catch (err) {
+      document.getElementById("loading-state").classList.add("als-hidden");
+      document.getElementById("error-state").classList.remove("als-hidden");
+      document.getElementById("error-detail").textContent = err.message;
+    }
+  }
+
+  function displayResults(result) {
+    document.getElementById("loading-state").classList.add("als-hidden");
+    document.getElementById("results-state").classList.remove("als-hidden");
+
+    const { riskScore, jurisdictionFlags, meta } = result;
+
+    // Company name
+    document.getElementById("company-name").textContent =
+      client.company || "Your organization";
+
+    // Risk badge
+    const badge = document.getElementById("risk-badge");
+    if (riskScore.riskLevel === "HIGH") {
+      badge.textContent = "ADVERSE IMPACT INDICATED";
+      badge.classList.add("als-badge--adverse");
+    } else {
+      badge.textContent = "NO ADVERSE IMPACT INDICATED";
+      badge.classList.add("als-badge--compliant");
+    }
+
+    // Gauge — show lowest impact ratio across adverse groups
+    const fill = document.getElementById("gauge-fill");
+    if (riskScore.adverseGroups.length > 0) {
+      const lowestRatio = Math.min(...riskScore.adverseGroups.map(g => g.impactRatio));
+      fill.style.width = (lowestRatio * 100).toFixed(1) + "%";
+      fill.classList.add("als-gauge__fill--adverse");
+    } else {
+      fill.style.width = "92%";
+      fill.classList.add("als-gauge__fill--compliant");
+    }
+
+    // Determination text
+    document.getElementById("determination-text").textContent = riskScore.determination;
+
+    // Group cards
+    renderGroupCards(result);
+
+    // Jurisdiction flags
+    renderJurFlags(jurisdictionFlags, meta);
+
+    // Excluded groups
+    if (riskScore.excludedGroups && riskScore.excludedGroups.length > 0) {
+      document.getElementById("excluded-block").classList.remove("als-hidden");
+      document.getElementById("excluded-list").innerHTML = riskScore.excludedGroups
+        .map(g => `<div>· ${g.name}: ${g.total} applicants — ${g.reason}</div>`).join("");
+    }
+  }
+
+  function renderGroupCards(result) {
+    const grid = document.getElementById("groups-grid");
+    const allGroups = [
+      ...result.riskScore.adverseGroups.map(g => ({ ...g, adverse: true })),
+      ...result.riskScore.compliantGroups.map(g => ({ ...g, adverse: false })),
+    ];
+
+    // Deduplicate — show only race/sex groups here, not intersectional
+    const mainGroups = allGroups.filter(g => !g.name.includes("—")).slice(0, 6);
+
+    grid.innerHTML = mainGroups.map(g => `
+      <div class="als-group-card als-group-card--${g.adverse ? "adverse" : "compliant"}">
+        <div class="als-group-card__name">${g.name}</div>
+        <div class="als-group-card__ratio als-group-card__ratio--${g.adverse ? "adverse" : "compliant"}">
+          ${g.impactRatio.toFixed(2)}
+        </div>
+        <div class="als-group-card__meta">
+          Impact ratio &nbsp;·&nbsp; ${g.total} applicants
+        </div>
+        <div class="als-group-card__meta">
+          ${g.adverse ? "Below 0.80 threshold — adverse impact" : "At or above 0.80 — compliant"}
+        </div>
+      </div>
+    `).join("");
+
+    // Intersectional
+    const intersectional = allGroups.filter(g => g.name.includes("—")).slice(0, 6);
+    if (intersectional.length > 0) {
+      document.getElementById("intersectional-grid").innerHTML = intersectional.map(g => `
+        <div class="als-group-card als-group-card--${g.adverse ? "adverse" : "compliant"}">
+          <div class="als-group-card__name" style="font-size:10px">${g.name}</div>
+          <div class="als-group-card__ratio als-group-card__ratio--${g.adverse ? "adverse" : "compliant"}"
+               style="font-size:20px">
+            ${g.impactRatio.toFixed(2)}
+          </div>
+          <div class="als-group-card__meta">${g.total} applicants</div>
+        </div>
+      `).join("");
+    } else {
+      document.getElementById("intersectional-block").style.display = "none";
+    }
+  }
+
+  function renderJurFlags(flags, meta) {
+    const container = document.getElementById("jur-flags");
+
+    container.innerHTML = flags.map(f => {
+      let badgeClass = "als-badge--compliant";
+      let badgeText = "Compliant";
+
+      if (f.lane === "documentation") {
+        badgeClass = "als-badge--doc";
+        badgeText = "Governance audit required";
+      } else if (!f.enforced) {
+        badgeClass = "als-badge--monitor";
+        badgeText = "Readiness — not yet enforced";
+      } else if (f.riskLevel === "HIGH") {
+        badgeClass = "als-badge--adverse";
+        badgeText = "Adverse impact · audit required";
+      } else if (f.monitor) {
+        badgeClass = "als-badge--monitor";
+        badgeText = "Compliant · monitor legal status";
+      }
+
+      return `
+        <div class="als-jur-flag-row">
+          <span class="als-jur-flag-row__name">${f.jurisdiction}</span>
+          <span class="als-badge ${badgeClass}">${badgeText}</span>
+        </div>
+      `;
+    }).join("");
+
+    // Colorado countdown
+    if (meta.coloradoDaysRemaining > 0) {
+      const co = flags.find(f => f.jurisdiction === "Colorado SB 205");
+      if (co) {
+        document.getElementById("co-strip").classList.remove("als-hidden");
+        document.getElementById("co-strip-text").textContent = co.message || co.activeMessage || "";
+      }
+    }
+
+    // California monitor
+    const ca = flags.find(f => f.jurisdiction === "California CPRA + AB 2930" && f.monitor);
+    if (ca) {
+      document.getElementById("ca-strip").classList.remove("als-hidden");
+      document.getElementById("ca-strip-text").textContent = ca.monitorNote || ca.message || "";
+    }
+  }
+
+  // Kick off on load
+  runEngineCall();
+</script>
+</body>
+</html>

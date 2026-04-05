@@ -1,0 +1,11 @@
+applicant_id,race_ethnicity,sex_gender,outcome,score
+1001,White (not Hispanic or Latino),Male,selected,
+1002,Black or African American (not Hispanic or Latino),Female,not_selected,
+1003,Hispanic or Latino,Female,selected,
+1004,Asian (not Hispanic or Latino),Male,selected,
+1005,White (not Hispanic or Latino),Female,not_selected,
+1006,Black or African American (not Hispanic or Latino),Male,selected,
+1007,Hispanic or Latino,Male,not_selected,
+1008,White (not Hispanic or Latino),Male,selected,
+1009,Two or More Races (not Hispanic or Latino),Female,not_selected,
+1010,White (not Hispanic or Latino),Female,selected,
