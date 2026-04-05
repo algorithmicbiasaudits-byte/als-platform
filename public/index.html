@@ -1,93 +1,1020 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bias Assessment Tool — ALS Consulting</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── PRIMARY SEO ─────────────────────────────────────────── -->
+  <title>ALS Consulting | AI Governance & Algorithmic Bias Audits | HR Compliance</title>
+  <meta name="description" content="Independent algorithmic bias audits, EU AI Act compliance, and AI governance frameworks for HR and hiring. Serving US and international clients. Founded by 15-year HR leadership veteran Aisha Stargill." />
+  <meta name="keywords" content="algorithmic bias audit, EU AI Act compliance, AI governance consulting, HR AI compliance, hiring algorithm bias, EEOC AI compliance, NYC Local Law 144, AI risk framework, HR technology governance, adverse impact analysis" />
+  <meta name="author" content="Aisha Stargill, ALS Consulting" />
+  <meta name="robots" content="index, follow" />
+  <meta name="google-site-verification" content="puQeVGugd4OIj6jcQNsEwipLBuYnfd6Gz6ljLQAtUC4" />
+  <link rel="canonical" href="https://alsconsulting.netlify.app/" />
+
+  <!-- ── OPEN GRAPH (LinkedIn, Facebook) ────────────────────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://alsconsulting.netlify.app/" />
+  <meta property="og:title" content="ALS Consulting | AI Governance & Algorithmic Bias Audits" />
+  <meta property="og:description" content="Your AI tools are making decisions. Is anyone watching? Independent algorithmic bias audits and EU AI Act compliance for organizations that understand what is at stake." />
+  <meta property="og:image" content="https://alsconsulting.netlify.app/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ALS Consulting — AI Governance & HR Compliance" />
+  <meta property="og:site_name" content="ALS Consulting" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ── TWITTER / X CARD ───────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ALS Consulting | AI Governance & Algorithmic Bias Audits" />
+  <meta name="twitter:description" content="Your AI tools are making decisions. Is anyone watching? Independent algorithmic bias audits, EU AI Act compliance, and AI governance frameworks." />
+  <meta name="twitter:image" content="https://alsconsulting.netlify.app/og-image.jpg" />
+
+  <!-- ── GEO / LOCAL SEO ────────────────────────────────────── -->
+  <meta name="geo.region" content="US-NC" />
+  <meta name="geo.placename" content="Winston-Salem, North Carolina" />
+  <meta name="geo.position" content="36.0999;-80.2442" />
+  <meta name="ICBM" content="36.0999, -80.2442" />
+
+  <!-- ── STRUCTURED DATA: Organization ─────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "ALS Consulting",
+    "alternateName": "ALS Consulting — AI Governance & HR Compliance",
+    "url": "https://alsconsulting.netlify.app",
+    "description": "Independent algorithmic bias audits, EU AI Act compliance, and AI governance frameworks for organizations using AI in hiring and HR.",
+    "founder": {
+      "@type": "Person",
+      "name": "Aisha Stargill",
+      "jobTitle": "Founder & AI Governance Consultant",
+      "sameAs": "https://www.linkedin.com/in/aisha-stargill-668075263"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Winston-Salem",
+      "addressRegion": "NC",
+      "addressCountry": "US"
+    },
+    "areaServed": ["US", "UK", "EU", "International"],
+    "serviceType": [
+      "Algorithmic Bias Audit",
+      "EU AI Act Compliance",
+      "AI Risk Management Framework",
+      "HR Technology Governance",
+      "Vendor Contract Review",
+      "AI Compliance Training"
+    ],
+    "priceRange": "$$",
+    "sameAs": [
+      "https://www.linkedin.com/in/aisha-stargill-668075263"
+    ]
+  }
+  </script>
+
+  <!-- ── STRUCTURED DATA: FAQ ───────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an algorithmic bias audit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An algorithmic bias audit is an independent assessment of AI tools used in hiring to identify whether they produce discriminatory outcomes against protected classes. ALS Consulting uses the EEOC 4/5ths Rule, Chi-Square statistical testing, and knockout criteria review."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the EU AI Act deadline for HR AI tools?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI systems used in hiring and HR are classified as high-risk under the EU AI Act. The compliance deadline is August 2, 2026. Non-compliance penalties can reach up to 7% of global annual revenue."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does an algorithmic bias audit cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ALS Consulting's algorithmic bias audits start at $3,500 for startup-tier organizations. Mid-market and enterprise pricing is available. EU AI Act compliance strategy starts at $4,500."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is NYC Local Law 144?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "NYC Local Law 144 requires employers using automated employment decision tools (AEDTs) in New York City to conduct annual bias audits and notify candidates. ALS Consulting provides compliance audits and documentation for LL144 requirements."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ── STRUCTURED DATA: Breadcrumb ───────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://alsconsulting.netlify.app/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ── FAVICON ────────────────────────────────────────────── -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- ── FONTS & STYLES ─────────────────────────────────────── -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #001433;
+  --navy-mid: #0a2a5e;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --silver: #c0c8d8;
+  --silver-light: #e8edf5;
+  --white: #ffffff;
+  --off-white: #f8f9fc;
+  --text: #1a2744;
+  --muted: #6b7a99;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.2rem 4rem;
+  background: rgba(0,20,51,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 600;
+  color: var(--gold); letter-spacing: 0.05em; text-decoration: none;
+}
+.nav-logo span { color: var(--silver); font-weight: 300; }
+.nav-links { display: flex; gap: 2.5rem; align-items: center; }
+.nav-links a {
+  color: var(--silver-light); text-decoration: none;
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: transparent; border: 1px solid var(--gold);
+  color: var(--gold) !important; padding: 0.5rem 1.4rem;
+  letter-spacing: 0.15em; transition: all 0.3s !important;
+}
+.nav-cta:hover { background: var(--gold) !important; color: var(--navy) !important; }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  position: relative; overflow: hidden; padding: 8rem 4rem 4rem;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 10% 80%, rgba(192,200,216,0.06) 0%, transparent 50%),
+    linear-gradient(135deg, #001433 0%, #0d2254 50%, #001433 100%);
+}
+.hero-grid {
+  position: absolute; inset: 0; opacity: 0.04;
+  background-image: linear-gradient(rgba(201,168,76,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-content { position: relative; z-index: 2; max-width: 800px; }
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2rem; animation: fadeUp 0.8s ease forwards;
+}
+.hero-eyebrow-line { width: 40px; height: 1px; background: var(--gold); }
+.hero-eyebrow span {
+  font-size: 0.7rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold); font-weight: 500;
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 300;
+  line-height: 1.1; color: var(--white); margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero h1 strong { font-weight: 600; display: block; }
+.hero-sub {
+  font-size: 0.9rem; line-height: 1.8; color: var(--silver);
+  max-width: 540px; margin-bottom: 3rem; letter-spacing: 0.03em;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.hero-actions {
+  display: flex; gap: 1.2rem; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.6s ease both;
+}
+.btn-primary {
+  background: var(--gold); color: var(--navy);
+  padding: 0.9rem 2.2rem; font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+  text-transform: uppercase; text-decoration: none;
+  border: none; cursor: pointer; transition: all 0.3s; display: inline-block;
+}
+.btn-primary:hover {
+  background: var(--gold-light); transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+}
+.btn-secondary {
+  background: transparent; color: var(--silver-light);
+  padding: 0.9rem 2.2rem; font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em;
+  text-transform: uppercase; text-decoration: none;
+  border: 1px solid rgba(192,200,216,0.4);
+  cursor: pointer; transition: all 0.3s; display: inline-block;
+}
+.btn-secondary:hover {
+  border-color: var(--silver); color: var(--white); transform: translateY(-2px);
+}
+.hero-stats {
+  position: absolute; right: 4rem; bottom: 4rem;
+  display: flex; gap: 3rem; animation: fadeUp 0.8s 0.8s ease both;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;
+  font-weight: 300; color: var(--gold); line-height: 1; display: block;
+}
+.stat-label {
+  font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--silver); margin-top: 0.3rem; display: block;
+}
+
+/* MARQUEE */
+.marquee-wrap { background: var(--gold); padding: 0.9rem 0; overflow: hidden; }
+.marquee-track {
+  display: flex; gap: 3rem;
+  animation: marquee 20s linear infinite; white-space: nowrap;
+}
+.marquee-item {
+  font-size: 0.65rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--navy); font-weight: 600;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.marquee-item::after { content: '◆'; font-size: 0.4rem; }
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-eyebrow { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.section-eyebrow-line { width: 30px; height: 1px; background: var(--gold); }
+.section-eyebrow span {
+  font-size: 0.65rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold); font-weight: 500;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300;
+  line-height: 1.2; color: var(--white); margin-bottom: 1.5rem;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+
+/* ABOUT */
+.about {
+  background: linear-gradient(135deg, #001433 0%, #0d2254 100%);
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto;
+}
+.about-text p {
+  font-size: 0.9rem; line-height: 1.9; color: var(--silver);
+  margin-bottom: 1.5rem; letter-spacing: 0.02em;
+}
+.about-text p strong { color: var(--white); font-weight: 500; }
+.about-credentials {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;
+}
+.credential {
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 1.2rem; background: rgba(201,168,76,0.04);
+}
+.credential-label {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.4rem; display: block;
+}
+.credential-value { font-size: 0.85rem; color: var(--silver-light); line-height: 1.4; }
+.about-card {
+  background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.2);
+  padding: 2.5rem; position: relative;
+}
+.about-card::before {
+  content: '"'; font-family: 'Cormorant Garamond', serif;
+  font-size: 8rem; color: rgba(201,168,76,0.15);
+  position: absolute; top: -1rem; left: 1.5rem; line-height: 1;
+}
+.about-card blockquote {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+  font-weight: 300; font-style: italic; line-height: 1.6;
+  color: var(--silver-light); margin-bottom: 1.5rem; position: relative; z-index: 1;
+}
+.about-card cite {
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold); font-style: normal;
+}
+
+/* SERVICES */
+.services { background: var(--navy); border-top: 1px solid rgba(192,200,216,0.1); }
+.services-header {
+  max-width: 1200px; margin: 0 auto 4rem;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 2rem;
+}
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(192,200,216,0.1);
+  max-width: 1200px; margin: 0 auto;
+}
+.service-card {
+  background: var(--navy); padding: 2.5rem;
+  transition: background 0.3s; position: relative; overflow: hidden;
+}
+.service-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s;
+}
+.service-card:hover { background: rgba(201,168,76,0.05); }
+.service-card:hover::after { transform: scaleX(1); }
+.service-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 3rem;
+  font-weight: 300; color: rgba(201,168,76,0.2); line-height: 1;
+  margin-bottom: 1rem; display: block;
+}
+.service-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+  font-weight: 500; color: var(--white); margin-bottom: 0.8rem; line-height: 1.3;
+}
+.service-desc { font-size: 0.8rem; line-height: 1.8; color: var(--silver); margin-bottom: 1.5rem; }
+.service-price {
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gold); font-weight: 500;
+}
+
+/* WHY */
+.why {
+  background: linear-gradient(135deg, #0a1f4a 0%, #001433 100%);
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+.why-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto;
+}
+.why-points { display: flex; flex-direction: column; gap: 1.5rem; }
+.why-point {
+  display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.5rem;
+  border: 1px solid rgba(192,200,216,0.1); transition: border-color 0.3s, background 0.3s;
+}
+.why-point:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); }
+.why-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: rgba(201,168,76,0.1);
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+}
+.why-point-title {
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem;
+}
+.why-point-desc { font-size: 0.8rem; line-height: 1.7; color: var(--silver); }
+.why-visual { position: relative; display: flex; align-items: center; justify-content: center; }
+.why-circle {
+  width: 360px; height: 360px; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.2);
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.why-circle::before {
+  content: ''; position: absolute; inset: 20px;
+  border-radius: 50%; border: 1px solid rgba(192,200,216,0.1);
+}
+.why-circle-text { text-align: center; padding: 2rem; }
+.why-circle-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 5rem;
+  font-weight: 300; color: var(--gold); line-height: 1; display: block;
+}
+.why-circle-label {
+  font-size: 0.7rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--silver); display: block; margin-top: 0.5rem;
+}
+
+/* CASES */
+.cases { background: var(--navy); border-top: 1px solid rgba(192,200,216,0.1); }
+.cases-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0;
+}
+.case-card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(192,200,216,0.1);
+  padding: 2rem; position: relative;
+}
+.case-tag {
+  display: inline-block; font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--navy); background: var(--gold);
+  padding: 0.25rem 0.7rem; margin-bottom: 1.2rem; font-weight: 600;
+}
+.case-amount {
+  font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;
+  font-weight: 300; color: var(--white); line-height: 1; display: block; margin-bottom: 0.5rem;
+}
+.case-company {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem;
+}
+.case-desc { font-size: 0.8rem; line-height: 1.7; color: var(--silver); }
+
+/* RESOURCES */
+.resources {
+  background: linear-gradient(135deg, #0a1f4a 0%, #001433 100%);
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+.resources-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0;
+}
+.resource-card {
+  border: 1px solid rgba(201,168,76,0.2); padding: 2rem;
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  transition: all 0.3s; text-decoration: none; background: rgba(201,168,76,0.03);
+}
+.resource-card:hover {
+  background: rgba(201,168,76,0.08); transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.resource-icon {
+  width: 48px; height: 48px; flex-shrink: 0; background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--navy);
+}
+.resource-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;
+  color: var(--white); margin-bottom: 0.4rem;
+}
+.resource-desc { font-size: 0.8rem; color: var(--silver); line-height: 1.6; margin-bottom: 0.8rem; }
+.resource-link {
+  font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); font-weight: 600;
+}
+
+/* CONTACT */
+.contact { background: var(--navy); border-top: 1px solid rgba(201,168,76,0.2); }
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; max-width: 1200px; margin: 0 auto;
+}
+.contact-info p { font-size: 0.9rem; line-height: 1.8; color: var(--silver); margin-bottom: 2.5rem; }
+.contact-methods { display: flex; flex-direction: column; gap: 1rem; }
+.contact-method {
+  display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+  border: 1px solid rgba(192,200,216,0.1); text-decoration: none; transition: all 0.3s;
+}
+.contact-method:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+.contact-method-icon {
+  width: 36px; height: 36px; background: rgba(201,168,76,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.contact-method-label {
+  font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 0.1rem;
+}
+.contact-method-value { font-size: 0.85rem; color: var(--silver-light); }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-label {
+  font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--silver);
+}
+.form-input, .form-select, .form-textarea {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(192,200,216,0.15);
+  color: var(--white); padding: 0.8rem 1rem; font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.85rem; outline: none; transition: border-color 0.3s; width: 100%;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+.form-textarea { min-height: 120px; resize: vertical; }
+.form-select option { background: var(--navy-mid); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* FOOTER */
+footer { background: #000d22; border-top: 1px solid rgba(201,168,76,0.2); padding: 3rem 4rem 2rem; }
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 4rem; max-width: 1200px; margin: 0 auto 3rem;
+}
+.footer-brand-name {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+  color: var(--gold); font-weight: 500; margin-bottom: 0.8rem;
+}
+.footer-brand-desc { font-size: 0.8rem; line-height: 1.8; color: var(--muted); max-width: 300px; }
+.footer-col-title {
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 1.2rem;
+}
+.footer-links { display: flex; flex-direction: column; gap: 0.7rem; }
+.footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--silver); }
+.footer-bottom {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em;
+}
+.footer-bottom a { color: var(--gold); text-decoration: none; }
+
+/* DECORATIVE */
+.gold-line { width: 60px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 2rem; }
+.silver-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,200,216,0.3), transparent); margin: 4rem 0;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 4rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  .hero-stats { position: static; margin-top: 3rem; flex-wrap: wrap; gap: 2rem; }
+  .about-grid, .why-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .services-grid, .cases-grid { grid-template-columns: 1fr; }
+  .resources-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .why-circle { width: 280px; height: 280px; }
+}
+</style>
 </head>
-<body class="als-page">
+<body>
 
-  <nav class="als-nav">
-    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
-      ALS Consulting &nbsp;·&nbsp; AI Governance & HR Compliance
-    </a>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ALS <span>Consulting</span></a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#cases">Cases</a>
+    <a href="#resources">Resources</a>
+    <a href="#contact">Contact</a>
+    <a href="#roi-calculator">ROI Calculator</a>
     <a href="https://alsconsulting.netlify.app/screens/screen-1" class="nav-cta">Take Assessment</a>
-  </nav>
+  </div>
+</nav>
 
-  <main class="als-screen" style="display:flex;align-items:center">
-    <div class="als-container als-container--narrow" style="text-align:center">
-
-      <div style="display:inline-block;background:var(--als-navy);border-radius:12px;
-                  padding:16px 20px;margin-bottom:24px">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-             stroke="white" stroke-width="1.5" stroke-linecap="round">
-          <path d="M9 11l3 3L22 4"/>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-        </svg>
-      </div>
-
-      <h1 class="als-screen__title" style="font-size:28px">
-        Algorithmic Bias Self-Assessment
-      </h1>
-      <p style="font-size:15px;color:var(--als-text-muted);margin-bottom:8px;line-height:1.6">
-        Is your AI hiring tool making decisions that could expose your organization
-        to legal liability?
-      </p>
-      <p style="font-size:13px;color:var(--als-text-faint);margin-bottom:32px;line-height:1.6">
-        Free &nbsp;·&nbsp; 10–15 minutes &nbsp;·&nbsp; Results instant &nbsp;·&nbsp;
-        Six jurisdictions mapped
-      </p>
-
-      <a href="screens/screen-1.html"
-         class="als-btn als-btn--cta" style="text-decoration:none;margin-bottom:16px">
-        Start your assessment &nbsp;→
-      </a>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:28px;
-                  text-align:left">
-        <div style="padding:14px;background:var(--als-surface);border-radius:8px;
-                    border:0.5px solid var(--als-border)">
-          <div style="font-size:12px;font-weight:700;color:var(--als-text-primary);margin-bottom:3px">
-            Six jurisdictions
-          </div>
-          <div class="als-text-xs als-text-muted">NYC · Colorado · Illinois · California · EU · Texas</div>
-        </div>
-        <div style="padding:14px;background:var(--als-surface);border-radius:8px;
-                    border:0.5px solid var(--als-border)">
-          <div style="font-size:12px;font-weight:700;color:var(--als-text-primary);margin-bottom:3px">
-            EEOC-grounded
-          </div>
-          <div class="als-text-xs als-text-muted">Four-fifths rule · intersectional analysis</div>
-        </div>
-        <div style="padding:14px;background:var(--als-surface);border-radius:8px;
-                    border:0.5px solid var(--als-border)">
-          <div style="font-size:12px;font-weight:700;color:var(--als-text-primary);margin-bottom:3px">
-            Data stays local
-          </div>
-          <div class="als-text-xs als-text-muted">Processed in browser · never stored</div>
-        </div>
-      </div>
-
-      <div class="als-divider" style="margin:24px 0"></div>
-
-      <p class="als-text-xs als-text-muted" style="line-height:1.6">
-        This tool is a self-assessment only and is not a substitute for an independent
-        bias audit under applicable law. For certified compliance, contact
-        <a href="https://alsconsulting.netlify.app">ALS Consulting</a>.
-      </p>
-
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>AI Governance & HR Compliance</span>
     </div>
-  </main>
-
-  <footer class="als-footer">
-    <p class="als-footer__text">
-      &copy; 2026 ALS Consulting &nbsp;·&nbsp;
-      <a href="https://alsconsulting.netlify.app" class="als-footer__link">alsconsulting.netlify.app</a>
-      &nbsp;·&nbsp; Winston-Salem, NC
+    <h1>
+      Your AI tools are making <em>decisions.</em>
+      <strong>Is anyone watching?</strong>
+    </h1>
+    <p class="hero-sub">
+      Independent algorithmic bias audits, EU AI Act compliance, and AI governance frameworks
+      for organizations that understand what is at stake — before a regulator explains it to them.
     </p>
-  </footer>
+    <div class="hero-actions">
+      <a href="https://calendly.com/astargill-ih3e/30min" target="_blank" class="btn-primary">Schedule a Discovery Call</a>
+      <a href="#services" class="btn-secondary">Explore Services</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Years HR Leadership</span></div>
+    <div class="stat"><span class="stat-num">8</span><span class="stat-label">EU AI Act Requirements</span></div>
+    <div class="stat"><span class="stat-num">$365K</span><span class="stat-label">iTutorGroup Settlement</span></div>
+  </div>
+</section>
 
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Algorithmic Bias Audits</span>
+    <span class="marquee-item">EU AI Act Compliance</span>
+    <span class="marquee-item">AI Risk Frameworks</span>
+    <span class="marquee-item">HR Technology Governance</span>
+    <span class="marquee-item">Vendor Contract Review</span>
+    <span class="marquee-item">Training & Workshops</span>
+    <span class="marquee-item">NYC Local Law 144</span>
+    <span class="marquee-item">EEOC Compliance</span>
+    <span class="marquee-item">Algorithmic Bias Audits</span>
+    <span class="marquee-item">EU AI Act Compliance</span>
+    <span class="marquee-item">AI Risk Frameworks</span>
+    <span class="marquee-item">HR Technology Governance</span>
+    <span class="marquee-item">Vendor Contract Review</span>
+    <span class="marquee-item">Training & Workshops</span>
+    <span class="marquee-item">NYC Local Law 144</span>
+    <span class="marquee-item">EEOC Compliance</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span>About Aisha Stargill</span>
+      </div>
+      <h2 class="section-title">Built from <em>15 years</em> inside the systems</h2>
+      <p>I did not plan to become an AI governance consultant. I spent over <strong>15 years in HR leadership</strong> — manufacturing, nonprofits, government, multi-site organizations — recruiting people, hiring people, and fighting for people.</p>
+      <p>Then AI came into the hiring process. And suddenly the system was making decisions that no human could explain. Candidates were disappearing into a black hole before anyone saw their resume. <strong>I knew why. And I could not look away.</strong></p>
+      <p>That is how ALS Consulting was born. Not from a business plan — from 15 years of watching great candidates get filtered out by technology that was never designed with them in mind.</p>
+      <div class="about-credentials">
+        <div class="credential">
+          <span class="credential-label">Specialization</span>
+          <span class="credential-value">AI Governance & Algorithmic Bias Auditing</span>
+        </div>
+        <div class="credential">
+          <span class="credential-label">Regulatory Expertise</span>
+          <span class="credential-value">EU AI Act · NYC LL144 · EEOC · Title VII</span>
+        </div>
+        <div class="credential">
+          <span class="credential-label">Industries Served</span>
+          <span class="credential-value">Manufacturing · Healthcare · Nonprofit · Technology</span>
+        </div>
+        <div class="credential">
+          <span class="credential-label">Markets</span>
+          <span class="credential-value">US · UK · EU · International</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="about-card">
+        <blockquote>"You were never unqualified. You were unseen. And that is not the same thing."</blockquote>
+        <cite>— Aisha Stargill, Founder</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span>What We Do</span>
+      </div>
+      <h2 class="section-title">Services designed to <em>protect</em> your organization</h2>
+    </div>
+    <a href="https://calendly.com/astargill-ih3e/30min" target="_blank" class="btn-primary">Get Started</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <div class="service-title">Algorithmic Bias Audit</div>
+      <p class="service-desc">Independent assessment of your AI hiring tools using the EEOC 4/5ths Rule, Chi-Square statistical testing, and knockout criteria review. Every finding classified. Every risk documented.</p>
+      <span class="service-price">Starting at $3,500</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <div class="service-title">EU AI Act Compliance Strategy</div>
+      <p class="service-desc">Gap analysis against all 8 EU AI Act high-risk obligations. Full governance documentation package. Deadline: August 2, 2026. Penalties up to 7% of global revenue.</p>
+      <span class="service-price">Starting at $4,500</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <div class="service-title">AI Risk Management Framework</div>
+      <p class="service-desc">Complete organizational AI governance infrastructure — policy, registry, monitoring protocol, human oversight procedures, incident response, and governance committee charter.</p>
+      <span class="service-price">Starting at $5,500</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <div class="service-title">Vendor Contract Review</div>
+      <p class="service-desc">Your vendor said their tool is bias-free. Their contract says liability is yours. We review every AI vendor contract for compliance gaps, missing protections, and red flag clauses.</p>
+      <span class="service-price">Starting at $2,000</span>
+    </div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <div class="service-title">Training & Workshops</div>
+      <p class="service-desc">Customized AI literacy and compliance training for HR teams, hiring managers, legal counsel, and leadership. Practical. Plain-language. Legally grounded.</p>
+      <span class="service-price">Starting at $2,000</span>
+      <a href="/training.html" style="display:inline-block; margin-top: 1rem; font-size: 0.8rem; color: var(--gold); text-decoration: none; letter-spacing: 0.1em;">View Training Details →</a>
+    </div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <div class="service-title">Ongoing HR Compliance Advisory</div>
+      <p class="service-desc">Monthly retainer for continuous AI governance support — regulatory monitoring, quarterly bias testing, vendor oversight, and on-call compliance guidance.</p>
+      <span class="service-price">From $2,500/month</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why">
+  <div class="why-grid">
+    <div>
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span>Why ALS Consulting</span>
+      </div>
+      <h2 class="section-title">The gap no one else <em>fills</em></h2>
+      <div class="why-points">
+        <div class="why-point">
+          <div class="why-icon">⚖️</div>
+          <div>
+            <div class="why-point-title">HR From The Inside</div>
+            <p class="why-point-desc">15+ years living inside these systems. Not advising from the outside. That difference is everything when your liability is real.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-icon">🎯</div>
+          <div>
+            <div class="why-point-title">Small & Mid-Market Focus</div>
+            <p class="why-point-desc">Big firms start at $50,000. We serve the organizations that need this work most — at a price that makes sense.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-icon">🌍</div>
+          <div>
+            <div class="why-point-title">Both Sides of the Atlantic</div>
+            <p class="why-point-desc">US employment law expertise. EU AI Act specialization. For organizations navigating compliance in both jurisdictions simultaneously.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-icon">📋</div>
+          <div>
+            <div class="why-point-title">Proprietary Framework</div>
+            <p class="why-point-desc">Adverse Impact Calculator. Knockout Criteria Checklist. Finding Classification Guide. Tools built for this work — not adapted from something else.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual">
+      <div class="why-circle">
+        <div class="why-circle-text">
+          <span class="why-circle-num">100%</span>
+          <span class="why-circle-label">Independent</span>
+          <span class="why-circle-label">No Vendor Ties</span>
+          <span class="why-circle-label">No Conflicts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="cases" id="cases">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>What Happens Without Governance</span>
+    </div>
+    <h2 class="section-title">Real cases. Real <em>consequences.</em></h2>
+  </div>
+  <div class="cases-grid">
+    <div class="case-card">
+      <span class="case-tag">EEOC Settlement</span>
+      <span class="case-amount">$365,000</span>
+      <div class="case-company">iTutorGroup</div>
+      <p class="case-desc">AI tool automatically rejected women over 55 and men over 60. Over 200 candidates affected. The company said their AI was bias-free.</p>
+    </div>
+    <div class="case-card">
+      <span class="case-tag">Active Class Action</span>
+      <span class="case-amount">Millions</span>
+      <div class="case-company">Mobley v. Workday</div>
+      <p class="case-desc">Certified May 2025. Nationwide collective action covering applicants over 40 since September 2020. Rejection received at 1:50am — before any human reviewed the application.</p>
+    </div>
+    <div class="case-card">
+      <span class="case-tag">EEOC Complaint 2025</span>
+      <span class="case-amount">Active</span>
+      <div class="case-company">Intuit / HireVue</div>
+      <p class="case-desc">Deaf indigenous candidate scored on active listening by AI video interview tool. The system could not assess what it was designed to assess. No accommodation was offered.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="resources" id="resources">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>Free Resources</span>
+    </div>
+    <h2 class="section-title">Start the conversation <em>before</em> the regulator does</h2>
+  </div>
+  <div class="resources-grid">
+    <a href="algorithmic-bias-checklist.html" target="_blank" class="resource-card">
+      <div class="resource-icon">📋</div>
+      <div>
+        <div class="resource-title">Algorithmic Bias Risk Checklist</div>
+        <p class="resource-desc">25 questions to assess what your ATS is doing while nobody is watching. Each question mapped to protected class risk, legal standard, and corrective action.</p>
+        <span class="resource-link">Take the Assessment →</span>
+      </div>
+    </a>
+    <a href="ai-risk-assessment-intake.html" target="_blank" class="resource-card">
+      <div class="resource-icon">🔍</div>
+      <div>
+        <div class="resource-title">AI Risk Assessment Intake</div>
+        <p class="resource-desc">Not sure where your organization stands? Complete our free intake assessment to identify your most urgent AI governance gaps in under 10 minutes.</p>
+        <span class="resource-link">Take the Assessment →</span>
+      </div>
+    </a>
+    <a href="eu-ai-act-checklist.html" target="_blank" class="resource-card">
+      <div class="resource-icon">📅</div>
+      <div>
+        <div class="resource-title">EU AI Act Compliance Checklist</div>
+        <p class="resource-desc">All 8 high-risk AI obligations explained in plain English. What regulators are looking for. What you need to document. August 2, 2026 deadline.</p>
+        <span class="resource-link">Download Free →</span>
+      </div>
+    </a>
+    <a href="https://calendly.com/astargill-ih3e/30min" target="_blank" class="resource-card">
+      <div class="resource-icon">💬</div>
+      <div>
+        <div class="resource-title">Free 30-Minute Discovery Call</div>
+        <p class="resource-desc">Tell us what AI tools your organization uses. We will tell you where your exposure is. No obligation. No pitch. Just a genuine conversation.</p>
+        <span class="resource-link">Book Your Call →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="roi-calculator" style="padding: 80px 0; background: #0a0a0a;">
+  <div style="max-width: 960px; margin: 0 auto; padding: 0 24px;">
+    <iframe
+      src="/roi-calculator.html"
+      width="100%"
+      height="920"
+      frameborder="0"
+      scrolling="no"
+      style="border-radius: 12px; border: 1px solid #1e1e2e;">
+    </iframe>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="section-eyebrow">
+        <div class="section-eyebrow-line"></div>
+        <span>Get In Touch</span>
+      </div>
+      <h2 class="section-title">Ready to find out what your <em>system</em> is doing?</h2>
+      <p>The question is not whether this is happening in your organization. The question is whether you find out before or after a regulator does.</p>
+      <div class="contact-methods">
+        <a href="https://calendly.com/astargill-ih3e/30min" target="_blank" class="contact-method">
+          <div class="contact-method-icon">📅</div>
+          <div>
+            <span class="contact-method-label">Book a Discovery Call</span>
+            <span class="contact-method-value">calendly.com/astargill-ih3e/30min</span>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/aisha-stargill-668075263" target="_blank" class="contact-method">
+          <div class="contact-method-icon">💼</div>
+          <div>
+            <span class="contact-method-label">LinkedIn</span>
+            <span class="contact-method-value">linkedin.com/in/aisha-stargill-668075263</span>
+          </div>
+        </a>
+        <div class="contact-method">
+          <div class="contact-method-icon">📍</div>
+          <div>
+            <span class="contact-method-label">Location</span>
+            <span class="contact-method-value">Winston-Salem, NC · Serving US & International Clients</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="Your first name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Your last name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input type="text" class="form-input" placeholder="Your organization" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Interest</label>
+          <select class="form-select">
+            <option value="">Select a service...</option>
+            <option>Algorithmic Bias Audit</option>
+            <option>EU AI Act Compliance Strategy</option>
+            <option>AI Risk Management Framework</option>
+            <option>Vendor Contract Review</option>
+            <option>Training & Workshops</option>
+            <option>Ongoing HR Compliance Advisory</option>
+            <option>Not sure — let's talk</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell us about your organization and what you are trying to solve..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;text-align:center">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">ALS Consulting</div>
+      <p class="footer-brand-desc">AI Governance & HR Compliance Consulting. Independent algorithmic bias audits, EU AI Act compliance, and AI risk frameworks for organizations that understand what is at stake.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <div class="footer-links">
+        <a href="#services">Algorithmic Bias Audit</a>
+        <a href="#services">EU AI Act Compliance</a>
+        <a href="#services">AI Risk Framework</a>
+        <a href="#services">Vendor Contract Review</a>
+        <a href="/training.html">Training & Workshops</a>
+        <a href="#services">Advisory Retainer</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <div class="footer-links">
+        <a href="#about">About Aisha</a>
+        <a href="#resources">Free Resources</a>
+        <a href="#contact">Contact</a>
+        <a href="https://calendly.com/astargill-ih3e/30min" target="_blank">Book a Call</a>
+        <a href="https://www.linkedin.com/in/aisha-stargill-668075263" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ALS Consulting · AI Governance & HR Compliance · Winston-Salem, NC</span>
+    <span>Built for organizations that take compliance seriously · <a href="https://calendly.com/astargill-ih3e/30min" target="_blank">Schedule a Call</a></span>
+  </div>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  alert('Thank you for reaching out! I will be in touch within 24 hours. For faster response book a call at calendly.com/astargill-ih3e/30min');
+}
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.service-card, .case-card, .why-point, .resource-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
 </body>
 </html>
