@@ -76,8 +76,16 @@
 
 <script>
   // If already authenticated redirect straight to dashboard
-  if (sessionStorage.getItem("als_auditor_token")) {
+  if (sessionStorage.getItem("als_auditor_auth") === "1") {
     window.location.href = "dashboard.html";
+  }
+
+  // SHA-256 of "ALS@udit2026!"
+  const AUDITOR_HASH = "2de21976fb39d67a6de998e26f9afc5d1f54c7199e1c300ee4ba39332b68166f";
+
+  async function hashPassword(pw) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
+    return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, "0")).join("");
   }
 
   async function handleLogin() {
@@ -91,41 +99,24 @@
       return;
     }
 
-    // Show loading state
     btn.textContent   = "Verifying...";
     btn.disabled      = true;
     btn.style.opacity = "0.7";
     errorMsg.classList.add("als-hidden");
 
-    try {
-      const response = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
+    const hash = await hashPassword(password);
 
-      const result = await response.json();
-
-      if (result.success && result.token) {
-        // Store token and redirect to auditor dashboard
-        sessionStorage.setItem("als_auditor_token", result.token);
-        window.location.href = "dashboard.html";
-      } else {
-        errorMsg.classList.remove("als-hidden");
-        document.querySelector(".als-alert__title").textContent = "Incorrect password";
-        btn.textContent   = "Access auditor portal →";
-        btn.disabled      = false;
-        btn.style.opacity = "1";
-        document.getElementById("password").value = "";
-        document.getElementById("password").focus();
-      }
-
-    } catch (err) {
+    if (hash === AUDITOR_HASH) {
+      sessionStorage.setItem("als_auditor_auth", "1");
+      window.location.href = "dashboard.html";
+    } else {
       errorMsg.classList.remove("als-hidden");
-      document.querySelector(".als-alert__title").textContent = "Connection error — try again";
+      document.querySelector(".als-alert__title").textContent = "Incorrect password";
       btn.textContent   = "Access auditor portal →";
       btn.disabled      = false;
       btn.style.opacity = "1";
+      document.getElementById("password").value = "";
+      document.getElementById("password").focus();
     }
   }
 </script>

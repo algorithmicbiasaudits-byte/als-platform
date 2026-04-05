@@ -77,8 +77,8 @@
   // to the stored digest. Change AUDITOR_HASH by running:
   //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-password'))
   //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
-  // Default password: ALS2026audit!
-  const AUDITOR_HASH = "b3f3b1e4a2c0d8e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9";
+  // SHA-256 of "ALS@udit2026!"
+  const AUDITOR_HASH = "2de21976fb39d67a6de998e26f9afc5d1f54c7199e1c300ee4ba39332b68166f";
 
   async function hashPassword(pw) {
     const buf = await crypto.subtle.digest(
