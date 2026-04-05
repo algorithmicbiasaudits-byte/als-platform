@@ -102,6 +102,7 @@
 
     const CORRECT_HASH = "2de21976fb39d67a6de998e26f9afc5d1f54c7199e1c300ee4ba39332b68166f";
     const inputHash = await checkPassword(password);
+    alert("Input hash: " + inputHash);
 
     if (inputHash === CORRECT_HASH) {
       sessionStorage.setItem("als_auditor_auth", "1");
