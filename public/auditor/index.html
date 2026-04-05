@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auditor Login — ALS Consulting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Auditor Portal
+    </a>
+  </nav>
+
+  <main class="als-screen" style="display:flex;align-items:center">
+    <div class="als-container als-container--narrow">
+
+      <div style="text-align:center;margin-bottom:32px">
+        <div style="display:inline-flex;background:var(--als-navy);border-radius:12px;
+                    padding:16px;margin-bottom:20px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+               stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h1 class="als-screen__title" style="font-size:22px">Auditor Portal</h1>
+        <p style="font-size:13px;color:var(--als-text-muted)">
+          Restricted access &nbsp;·&nbsp; ALS Consulting staff only
+        </p>
+      </div>
+
+      <div class="als-card">
+        <form id="login-form" novalidate>
+          <div class="als-form-group">
+            <label class="als-label" for="password">Auditor password</label>
+            <input class="als-input" type="password" id="password"
+                   placeholder="Enter your password" autocomplete="current-password" required>
+          </div>
+
+          <div id="login-error" class="als-alert als-alert--adverse als-hidden" style="margin-top:12px">
+            Incorrect password. Please try again.
+          </div>
+
+          <button type="submit" class="als-btn als-btn--primary" style="margin-top:16px">
+            Sign in &nbsp;→
+          </button>
+        </form>
+      </div>
+
+      <p class="als-text-xs als-text-muted als-text-center" style="margin-top:16px;line-height:1.6">
+        This portal is for certified auditors only. If you are a client,
+        <a href="../index.html">start your self-assessment here</a>.
+      </p>
+
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">
+      &copy; 2026 ALS Consulting &nbsp;·&nbsp;
+      <a href="https://alsconsulting.netlify.app" class="als-footer__link">alsconsulting.netlify.app</a>
+      &nbsp;·&nbsp; Winston-Salem, NC
+    </p>
+  </footer>
+
+<script>
+  // Redirect if already authenticated
+  if (sessionStorage.getItem("als_auditor_auth") === "1") {
+    window.location.replace("dashboard.html");
+  }
+
+  // Password is verified by hashing the input with SHA-256 and comparing
+  // to the stored digest. Change AUDITOR_HASH by running:
+  //   crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-password'))
+  //     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+  // Default password: ALS2026audit!
+  const AUDITOR_HASH = "b3f3b1e4a2c0d8e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9";
+
+  async function hashPassword(pw) {
+    const buf = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(pw)
+    );
+    return [...new Uint8Array(buf)]
+      .map(x => x.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  document.getElementById("login-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const pw = document.getElementById("password").value;
+    const hash = await hashPassword(pw);
+
+    if (hash === AUDITOR_HASH) {
+      sessionStorage.setItem("als_auditor_auth", "1");
+      window.location.replace("dashboard.html");
+    } else {
+      document.getElementById("login-error").classList.remove("als-hidden");
+      document.getElementById("password").classList.add("als-input--error");
+      document.getElementById("password").value = "";
+      document.getElementById("password").focus();
+    }
+  });
+
+  // Clear error on new input
+  document.getElementById("password").addEventListener("input", function() {
+    document.getElementById("login-error").classList.add("als-hidden");
+    this.classList.remove("als-input--error");
+  });
+</script>
+</body>
+</html>

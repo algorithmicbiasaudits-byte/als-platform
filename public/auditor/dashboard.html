@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auditor Dashboard — ALS Consulting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="als-page">
+
+  <nav class="als-nav">
+    <a href="https://alsconsulting.netlify.app" class="als-nav__logo">
+      ALS Consulting &nbsp;·&nbsp; Auditor Dashboard
+    </a>
+    <button onclick="signOut()"
+            style="background:rgba(255,255,255,0.1);color:white;border:none;
+                   padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;
+                   cursor:pointer;font-family:inherit">
+      Sign out
+    </button>
+  </nav>
+
+  <main class="als-screen">
+    <div class="als-container als-container--wide">
+
+      <!-- HEADER -->
+      <div style="margin-bottom:28px">
+        <h1 class="als-screen__title">Audit Review Dashboard</h1>
+        <p class="als-screen__sub" style="margin-bottom:0">
+          Review client self-assessment results, complete the audit checklist, and issue certification.
+        </p>
+      </div>
+
+      <!-- STEP 1: PASTE CLIENT RESULTS -->
+      <div class="als-card" id="step-import">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--als-navy);
+                      color:white;font-size:11px;font-weight:800;display:flex;
+                      align-items:center;justify-content:center;flex-shrink:0">1</div>
+          <h2 style="font-size:15px;font-weight:700;color:var(--als-text-primary)">
+            Load client assessment results
+          </h2>
+        </div>
+
+        <p class="als-text-xs als-text-muted" style="margin-bottom:14px">
+          Paste the JSON output from the client's self-assessment, or enter the client details manually below.
+        </p>
+
+        <div class="als-form-row" style="margin-bottom:12px">
+          <div class="als-form-group">
+            <label class="als-label" for="client-name">Client name</label>
+            <input class="als-input" type="text" id="client-name" placeholder="Acme Corporation">
+          </div>
+          <div class="als-form-group">
+            <label class="als-label" for="client-contact">Primary contact</label>
+            <input class="als-input" type="text" id="client-contact" placeholder="Sarah Johnson, HR Director">
+          </div>
+        </div>
+        <div class="als-form-row" style="margin-bottom:12px">
+          <div class="als-form-group">
+            <label class="als-label" for="client-email">Contact email</label>
+            <input class="als-input" type="email" id="client-email" placeholder="sarah@acme.com">
+          </div>
+          <div class="als-form-group">
+            <label class="als-label" for="audit-date">Audit date</label>
+            <input class="als-input" type="date" id="audit-date">
+          </div>
+        </div>
+
+        <div class="als-form-group" style="margin-bottom:0">
+          <label class="als-label" for="results-json">Assessment JSON (optional)</label>
+          <textarea class="als-textarea als-input" id="results-json"
+                    style="height:120px;font-family:var(--als-font-mono);font-size:12px"
+                    placeholder='Paste client results JSON here, or leave blank to fill checklist manually...'></textarea>
+        </div>
+
+        <button onclick="loadResults()" class="als-btn als-btn--secondary als-btn--sm"
+                style="margin-top:12px">
+          Load JSON &nbsp;→
+        </button>
+
+        <div id="load-error" class="als-alert als-alert--adverse als-hidden" style="margin-top:10px"></div>
+        <div id="load-success" class="als-alert als-alert--compliant als-hidden" style="margin-top:10px">
+          Results loaded successfully.
+        </div>
+      </div>
+
+      <!-- STEP 2: RISK SUMMARY -->
+      <div class="als-card" id="step-summary" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--als-navy);
+                      color:white;font-size:11px;font-weight:800;display:flex;
+                      align-items:center;justify-content:center;flex-shrink:0">2</div>
+          <h2 style="font-size:15px;font-weight:700;color:var(--als-text-primary)">
+            Assessment summary
+          </h2>
+        </div>
+        <div id="summary-body"></div>
+      </div>
+
+      <!-- STEP 3: AUDIT CHECKLIST -->
+      <div class="als-card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--als-navy);
+                      color:white;font-size:11px;font-weight:800;display:flex;
+                      align-items:center;justify-content:center;flex-shrink:0">3</div>
+          <h2 style="font-size:15px;font-weight:700;color:var(--als-text-primary)">
+            Independent audit checklist
+          </h2>
+        </div>
+
+        <p class="als-text-xs als-text-muted" style="margin-bottom:16px">
+          Complete each item. All items must be checked before certification can be issued.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px" id="checklist">
+
+          <label class="checklist-item" data-id="data-verified">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Data verified</div>
+              <div class="checklist-sub">Auditor has reviewed the original ATS export and confirmed row counts, demographic categories, and outcome values match the submitted dataset.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="calc-verified">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Calculations independently verified</div>
+              <div class="checklist-sub">Selection rates, impact ratios, and four-fifths rule determinations have been independently recalculated and confirmed against the engine output.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="exclusions-reviewed">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Exclusion decisions reviewed</div>
+              <div class="checklist-sub">Groups excluded under the 2% threshold have been identified and the exclusion rationale has been documented and confirmed as appropriate under applicable law.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="intersectional-reviewed">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Intersectional analysis reviewed (NYC LL144)</div>
+              <div class="checklist-sub">If NYC LL144 applies, race × sex intersectional groups have been reviewed and all qualifying combinations assessed for adverse impact.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="scope-confirmed">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Tool scope confirmed</div>
+              <div class="checklist-sub">The AEDT's function, hiring stage, and candidate population have been confirmed. The audit scope is limited to the submitted hiring decision data.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="jurisdictions-confirmed">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Applicable jurisdictions confirmed</div>
+              <div class="checklist-sub">The selected jurisdictions have been confirmed as applicable based on the client's operating locations, employee headcount, and tool deployment context.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="limitations-communicated">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Audit limitations documented</div>
+              <div class="checklist-sub">Any data gaps, unknown demographic values, out-of-scope jurisdictions, or limitations of this audit have been documented in the audit notes below.</div>
+            </div>
+          </label>
+
+          <label class="checklist-item" data-id="client-notified">
+            <input type="checkbox" class="checklist-check">
+            <div class="checklist-content">
+              <div class="checklist-title">Client notified of results</div>
+              <div class="checklist-sub">The client has been informed of the audit outcome, adverse impact determinations (if any), and next steps required for legal compliance.</div>
+            </div>
+          </label>
+
+        </div>
+
+        <div class="als-form-group">
+          <label class="als-label" for="audit-notes">Audit notes &amp; limitations</label>
+          <textarea class="als-textarea als-input" id="audit-notes"
+                    placeholder="Document any data gaps, scope limitations, out-of-scope jurisdictions, or additional findings here..."></textarea>
+        </div>
+      </div>
+
+      <!-- STEP 4: CERTIFICATION -->
+      <div class="als-card" id="step-cert">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--als-navy);
+                      color:white;font-size:11px;font-weight:800;display:flex;
+                      align-items:center;justify-content:center;flex-shrink:0">4</div>
+          <h2 style="font-size:15px;font-weight:700;color:var(--als-text-primary)">
+            Issue certification
+          </h2>
+        </div>
+
+        <div class="als-form-row" style="margin-bottom:12px">
+          <div class="als-form-group">
+            <label class="als-label" for="auditor-name">Auditor name</label>
+            <input class="als-input" type="text" id="auditor-name"
+                   value="Aisha Stargill" placeholder="Full name">
+          </div>
+          <div class="als-form-group">
+            <label class="als-label" for="auditor-title">Title</label>
+            <input class="als-input" type="text" id="auditor-title"
+                   value="Founder, ALS Consulting" placeholder="Title / firm">
+          </div>
+        </div>
+
+        <div class="als-form-group">
+          <label class="als-label" for="cert-outcome">Certification outcome</label>
+          <select class="als-select als-input" id="cert-outcome">
+            <option value="">Select outcome...</option>
+            <option value="certified-no-adverse">Certified — No adverse impact found</option>
+            <option value="certified-adverse-documented">Certified — Adverse impact found and documented</option>
+            <option value="certified-remediation">Certified pending remediation — adverse impact requires corrective action</option>
+            <option value="not-certifiable">Not certifiable — insufficient data or scope</option>
+          </select>
+        </div>
+
+        <div id="cert-preview" class="als-hidden"
+             style="background:var(--als-navy);border-radius:10px;padding:20px 24px;margin:16px 0">
+          <div style="color:rgba(255,255,255,0.5);font-size:10px;font-weight:700;
+                      letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px">
+            Audit Certification — ALS Consulting
+          </div>
+          <div id="cert-text" style="color:white;font-size:13px;line-height:1.7"></div>
+          <div style="margin-top:16px;padding-top:16px;border-top:0.5px solid rgba(255,255,255,0.15);
+                      color:rgba(255,255,255,0.5);font-size:11px" id="cert-sig"></div>
+        </div>
+
+        <div id="checklist-warning" class="als-alert als-alert--monitor als-hidden">
+          Complete all checklist items before issuing certification.
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button onclick="previewCert()" class="als-btn als-btn--secondary" style="flex:1">
+            Preview certification
+          </button>
+          <button onclick="printCert()" class="als-btn als-btn--primary" style="flex:1">
+            Print / export PDF
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="als-footer">
+    <p class="als-footer__text">
+      &copy; 2026 ALS Consulting &nbsp;·&nbsp;
+      <a href="https://alsconsulting.netlify.app" class="als-footer__link">alsconsulting.netlify.app</a>
+      &nbsp;·&nbsp; Winston-Salem, NC
+    </p>
+  </footer>
+
+<style>
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 0.5px solid var(--als-border);
+    border-radius: 8px;
+    background: var(--als-surface);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .checklist-item:hover {
+    border-color: var(--als-navy-light);
+    background: #f0f2f5;
+  }
+  .checklist-item input[type="checkbox"] {
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    accent-color: var(--als-navy);
+    cursor: pointer;
+  }
+  .checklist-item.checked {
+    background: var(--als-compliant-bg);
+    border-color: var(--als-compliant-bd);
+  }
+  .checklist-content { flex: 1; }
+  .checklist-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--als-text-primary);
+    margin-bottom: 2px;
+  }
+  .checklist-sub {
+    font-size: 11px;
+    color: var(--als-text-muted);
+    line-height: 1.5;
+  }
+  @media print {
+    .als-nav, .als-footer, #step-import, #checklist,
+    .als-form-group, button, .als-btn { display: none !important; }
+    #cert-preview { display: block !important; }
+    body { background: white; }
+  }
+</style>
+
+<script>
+  // ── AUTH GUARD ──────────────────────────────────────────────
+  if (sessionStorage.getItem("als_auditor_auth") !== "1") {
+    window.location.replace("index.html");
+  }
+
+  function signOut() {
+    sessionStorage.removeItem("als_auditor_auth");
+    window.location.replace("index.html");
+  }
+
+  // ── SET TODAY'S DATE ────────────────────────────────────────
+  document.getElementById("audit-date").value = new Date().toISOString().split("T")[0];
+
+  // ── CHECKLIST STATE ─────────────────────────────────────────
+  document.querySelectorAll(".checklist-check").forEach(function(cb) {
+    cb.addEventListener("change", function() {
+      const item = this.closest(".checklist-item");
+      item.classList.toggle("checked", this.checked);
+    });
+  });
+
+  function allChecked() {
+    return [...document.querySelectorAll(".checklist-check")].every(cb => cb.checked);
+  }
+
+  // ── LOAD JSON RESULTS ───────────────────────────────────────
+  function loadResults() {
+    const raw = document.getElementById("results-json").value.trim();
+    if (!raw) {
+      document.getElementById("load-error").textContent = "No JSON provided.";
+      document.getElementById("load-error").classList.remove("als-hidden");
+      return;
+    }
+
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      document.getElementById("load-error").textContent = "Invalid JSON: " + e.message;
+      document.getElementById("load-error").classList.remove("als-hidden");
+      return;
+    }
+
+    document.getElementById("load-error").classList.add("als-hidden");
+    document.getElementById("load-success").classList.remove("als-hidden");
+
+    // Render summary
+    const rs = data.riskScore || {};
+    const meta = data.meta || {};
+    const riskColor = rs.riskLevel === "HIGH" ? "var(--als-adverse)" : "var(--als-compliant)";
+
+    document.getElementById("summary-body").innerHTML = `
+      <div class="als-stats-grid" style="margin-bottom:16px">
+        <div class="als-stat">
+          <div class="als-stat__label">Risk level</div>
+          <div class="als-stat__value" style="color:${riskColor}">${rs.riskLevel || "—"}</div>
+        </div>
+        <div class="als-stat">
+          <div class="als-stat__label">Total applicants</div>
+          <div class="als-stat__value">${meta.totalApplicants ?? "—"}</div>
+        </div>
+        <div class="als-stat">
+          <div class="als-stat__label">Output type</div>
+          <div class="als-stat__value" style="font-size:14px;padding-top:4px">
+            ${meta.outputType === "pass_fail" ? "Pass / Fail" : (meta.outputType === "scored" ? "Scored" : "—")}
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--als-text-mid);line-height:1.6;
+                  padding:12px 14px;background:var(--als-surface);border-radius:8px;
+                  border:0.5px solid var(--als-border)">
+        ${rs.determination || "No determination available."}
+      </div>
+      ${(rs.adverseGroups || []).length > 0 ? `
+        <div style="margin-top:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--als-adverse);
+                      text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">
+            Adverse impact groups
+          </div>
+          ${rs.adverseGroups.map(g => `
+            <div style="display:flex;justify-content:space-between;align-items:center;
+                        padding:8px 12px;background:var(--als-adverse-bg);
+                        border:0.5px solid var(--als-adverse-bd);border-radius:6px;
+                        margin-bottom:6px;font-size:12px">
+              <span style="color:var(--als-text-primary);font-weight:600">${g.name}</span>
+              <span style="color:var(--als-adverse);font-weight:700">
+                IR: ${g.impactRatio != null ? (g.impactRatio * 100).toFixed(1) + "%" : "—"}
+              </span>
+            </div>
+          `).join("")}
+        </div>
+      ` : ""}
+    `;
+
+    document.getElementById("step-summary").style.display = "block";
+    document.getElementById("step-summary").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // ── CERTIFICATION ───────────────────────────────────────────
+  function previewCert() {
+    const clientName   = document.getElementById("client-name").value.trim() || "[Client name]";
+    const auditDate    = document.getElementById("audit-date").value || new Date().toISOString().split("T")[0];
+    const auditorName  = document.getElementById("auditor-name").value.trim() || "Aisha Stargill";
+    const auditorTitle = document.getElementById("auditor-title").value.trim() || "Founder, ALS Consulting";
+    const outcome      = document.getElementById("cert-outcome").value;
+    const notes        = document.getElementById("audit-notes").value.trim();
+
+    if (!outcome) {
+      document.getElementById("checklist-warning").textContent = "Please select a certification outcome.";
+      document.getElementById("checklist-warning").classList.remove("als-hidden");
+      return;
+    }
+
+    if (!allChecked()) {
+      document.getElementById("checklist-warning").textContent =
+        "Complete all checklist items before issuing certification.";
+      document.getElementById("checklist-warning").classList.remove("als-hidden");
+      return;
+    }
+
+    document.getElementById("checklist-warning").classList.add("als-hidden");
+
+    const outcomeText = {
+      "certified-no-adverse":
+        `Following an independent bias audit conducted on ${auditDate}, ALS Consulting certifies that <strong>${clientName}</strong>'s automated employment decision tool produced <strong>no adverse impact</strong> on any protected class group meeting the minimum population threshold. All qualifying race/ethnicity and sex/gender groups met or exceeded the four-fifths (80%) rule threshold.`,
+      "certified-adverse-documented":
+        `Following an independent bias audit conducted on ${auditDate}, ALS Consulting certifies that <strong>${clientName}</strong>'s automated employment decision tool produced <strong>adverse impact on one or more protected class groups</strong>. Findings have been documented and communicated to the client as required under applicable law.`,
+      "certified-remediation":
+        `Following an independent bias audit conducted on ${auditDate}, ALS Consulting certifies that <strong>${clientName}</strong>'s automated employment decision tool produced <strong>adverse impact requiring corrective action</strong>. Certification is issued pending implementation of the remediation plan documented in the audit report.`,
+      "not-certifiable":
+        `Following an independent bias audit conducted on ${auditDate}, ALS Consulting has determined that <strong>${clientName}</strong>'s submission is <strong>not certifiable</strong> under current audit standards due to insufficient data or scope limitations documented in the audit notes.`,
+    }[outcome] || "";
+
+    document.getElementById("cert-text").innerHTML =
+      outcomeText +
+      (notes ? `<br><br><em>Audit notes: ${notes}</em>` : "");
+
+    document.getElementById("cert-sig").innerHTML =
+      `${auditorName} &nbsp;·&nbsp; ${auditorTitle}<br>` +
+      `ALS Consulting &nbsp;·&nbsp; astargill@alsconsulting.com &nbsp;·&nbsp; alsconsulting.netlify.app<br>` +
+      `Issued: ${auditDate}`;
+
+    document.getElementById("cert-preview").classList.remove("als-hidden");
+    document.getElementById("cert-preview").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function printCert() {
+    previewCert();
+    setTimeout(() => window.print(), 300);
+  }
+</script>
+</body>
+</html>
