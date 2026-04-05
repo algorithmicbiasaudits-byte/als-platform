@@ -74,13 +74,8 @@
     window.location.replace("dashboard.html");
   }
 
-  async function checkPassword(input) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(input);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-  }
+  const PARTS = ["ALS", "Audit", "2026"];
+  const CORRECT = PARTS.join("");
 
   document.getElementById("login-btn").addEventListener("click", handleLogin);
   document.getElementById("password").addEventListener("keydown", function(e) {
@@ -94,19 +89,10 @@
   async function handleLogin() {
     const password = document.getElementById("password").value;
     const btn = document.getElementById("login-btn");
-
     if (!password) return;
-
     btn.textContent = "Verifying...";
     btn.disabled = true;
-
-    const H1 = "2de21976fb39d67a6de998e26f9afc";
-    const H2 = "5d1f54c7199e1c300ee4ba39332b68166f";
-    const CORRECT_HASH = H1 + H2;
-    const inputHash = await checkPassword(password);
-    alert("Input hash: " + inputHash);
-
-    if (inputHash === CORRECT_HASH) {
+    if (password === CORRECT) {
       sessionStorage.setItem("als_auditor_auth", "1");
       window.location.replace("dashboard.html");
     } else {
