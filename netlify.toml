@@ -11,3 +11,8 @@
   from = "/auditor"
   to = "/auditor/index.html"
   status = 200
+
+[[redirects]]
+  from = "/screens/:screen"
+  to = "/screens/:screen.html"
+  status = 200
