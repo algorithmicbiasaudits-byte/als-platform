@@ -20,4 +20,3 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 [functions]
-  node_bundler = "esbuild"

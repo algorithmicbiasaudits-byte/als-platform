@@ -607,9 +607,20 @@ function runEngine(input) {
 // NETLIFY SERVERLESS FUNCTION EXPORT
 // This is the handler Netlify calls when the client submits their data.
 // ─────────────────────────────────────────────────────────────────────────────
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin":  "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 exports.handler = async function(event) {
+  // Handle CORS preflight
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 204, headers: CORS_HEADERS, body: "" };
+  }
+
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: JSON.stringify({ error: "Method not allowed" }) };
+    return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: "Method not allowed" }) };
   }
 
   try {
@@ -619,15 +630,13 @@ exports.handler = async function(event) {
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
       body: JSON.stringify(result),
     };
   } catch (err) {
     return {
       statusCode: 500,
+      headers: CORS_HEADERS,
       body: JSON.stringify({ error: "Engine error", detail: err.message }),
     };
   }
@@ -636,19 +645,18 @@ exports.handler = async function(event) {
 // ─────────────────────────────────────────────────────────────────────────────
 // EXPORTS FOR TESTING
 // ─────────────────────────────────────────────────────────────────────────────
-module.exports = {
-  runEngine,
-  resolveJurisdictions,
-  calcSelectionRate,
-  calcImpactRatio,
-  calcScoringRate,
-  calcMedian,
-  processGroups,
-  processIntersectional,
-  applyImpactRatios,
-  assembleRiskScore,
-  buildJurisdictionFlags,
-  JURISDICTIONS,
-  FOUR_FIFTHS_THRESHOLD,
-  LEGAL_SUFFICIENCY_WALL,
-};
+// Testing exports — assigned individually to preserve exports.handler above
+module.exports.runEngine             = runEngine;
+module.exports.resolveJurisdictions  = resolveJurisdictions;
+module.exports.calcSelectionRate     = calcSelectionRate;
+module.exports.calcImpactRatio       = calcImpactRatio;
+module.exports.calcScoringRate       = calcScoringRate;
+module.exports.calcMedian            = calcMedian;
+module.exports.processGroups         = processGroups;
+module.exports.processIntersectional = processIntersectional;
+module.exports.applyImpactRatios     = applyImpactRatios;
+module.exports.assembleRiskScore     = assembleRiskScore;
+module.exports.buildJurisdictionFlags = buildJurisdictionFlags;
+module.exports.JURISDICTIONS         = JURISDICTIONS;
+module.exports.FOUR_FIFTHS_THRESHOLD = FOUR_FIFTHS_THRESHOLD;
+module.exports.LEGAL_SUFFICIENCY_WALL = LEGAL_SUFFICIENCY_WALL;
