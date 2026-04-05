@@ -100,7 +100,9 @@
     btn.textContent = "Verifying...";
     btn.disabled = true;
 
-    const CORRECT_HASH = "2de21976fb39d67a6de998e26f9afc5d1f54c7199e1c300ee4ba39332b68166f";
+    const H1 = "2de21976fb39d67a6de998e26f9afc";
+    const H2 = "5d1f54c7199e1c300ee4ba39332b68166f";
+    const CORRECT_HASH = H1 + H2;
     const inputHash = await checkPassword(password);
     alert("Input hash: " + inputHash);
 
