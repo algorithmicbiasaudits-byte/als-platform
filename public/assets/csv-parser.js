@@ -249,6 +249,16 @@ function normalizeRace(raw) {
   const val = raw.toLowerCase().trim();
   if (!val || val === "unknown" || val === "n/a" || val === "decline") return "";
 
+  // Check "not hispanic" phrases first so pre-normalized EEOC strings don't false-match the hispanic check below
+  if (val.includes("not hispanic") || val.includes("not latino")) {
+    if (val.includes("black") || val.includes("african")) return "Black or African American (not Hispanic or Latino)";
+    if (val.includes("asian")) return "Asian (not Hispanic or Latino)";
+    if (val.includes("white") || val.includes("caucasian")) return "White (not Hispanic or Latino)";
+    if (val.includes("native hawaiian") || val.includes("pacific")) return "Native Hawaiian or Other Pacific Islander (not Hispanic or Latino)";
+    if (val.includes("american indian") || val.includes("alaska")) return "American Indian or Alaska Native (not Hispanic or Latino)";
+    if (val.includes("two") || val.includes("multi") || val.includes("biracial")) return "Two or More Races (not Hispanic or Latino)";
+  }
+
   if (val.includes("hispanic") || val.includes("latino")) return "Hispanic or Latino";
   if (val.includes("black") || val.includes("african")) return "Black or African American (not Hispanic or Latino)";
   if (val.includes("asian")) return "Asian (not Hispanic or Latino)";
