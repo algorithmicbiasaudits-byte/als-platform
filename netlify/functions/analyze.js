@@ -35,22 +35,42 @@ const JURISDICTIONS = {
     id:           "colorado_sb205",
     name:         "Colorado SB 205",
     lane:         "calculation",
-    effectiveDate: new Date("2026-06-30"),   // ← auto-flips on this date
+    effectiveDate: new Date("2026-06-30"),   // ← original date; STAYED pending court ruling & SB 26-189
     enforced:     false,                     // engine sets this at runtime
-    monitor:      false,
-    monitorNote:  null,
+    monitor:      true,                      // ← NOW TRUE: monitoring federal stay & SB 26-189
+    enforcementStatus: "STAYED",             // Federal court stay: xAI v. Weiser, April 27, 2026
+    monitorNote:
+      "FEDERAL COURT STAY ISSUED (April 27, 2026): U.S. Magistrate Judge Cyrus Y. Chung " +
+      "ordered the Colorado Attorney General not to enforce SB 205 until final adoption of AG rulemaking. " +
+      "PENDING LEGISLATION: Colorado SB 26-189 (Polis-backed replacement) introduced May 1, 2026. " +
+      "Legislature session ends May 13. If SB 26-189 passes, it supersedes SB 205 with simpler requirements " +
+      "(disclosure + recordkeeping vs. comprehensive risk management framework). " +
+      "Two scenarios possible: (1) SB 205 enforces June 30, 2026, or (2) SB 26-189 supersedes on Jan 1, 2027. " +
+      "Your audit covers both. No re-assessment needed if law changes.",
+    pendingReplacementBill: "SB 26-189",
+    replacementEffectiveDate: new Date("2027-01-01"),
+    legislativeDeadline: new Date("2026-05-13"),
     requiresIntersectional: false,
     exclusionThreshold: 0.02,
     annualAuditRequired: true,
     publicPostingRequired: false,
     preEnforcementMessage: (daysRemaining) =>
-      `Colorado SB205 takes effect June 30, 2026 — ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""} remaining. ` +
-      `Results reflect your readiness posture, not current legal exposure. ` +
-      `Use this assessment to prepare before the enforcement date.`,
+      `⚠️ Colorado AI Law: ENFORCEMENT PAUSED (Federal Stay, April 27, 2026) ` +
+      `Original effective date: June 30, 2026 — ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""} remaining. ` +
+      `STATUS: Federal court has ordered enforcement pause pending rulemaking. ` +
+      `PENDING: Colorado legislature voting on simpler replacement bill (SB 26-189, deadline May 13). ` +
+      `Your audit covers both scenarios. Results reflect your readiness posture. ` +
+      `Compliance status will be updated when court/legislature acts.`,
     postEnforcementMessage:
-      `Colorado SB205 is now fully enforceable. ` +
-      `This assessment reflects your current legal exposure. ` +
-      `Non-compliance may result in regulatory action.`,
+      `Colorado SB205 enforcement is now active (federal stay lifted). ` +
+      `This assessment reflects your current legal exposure under SB 205. ` +
+      `Non-compliance may result in regulatory action by Colorado AG. ` +
+      `Note: If SB 26-189 passed, simpler requirements may apply instead. Confirm with counsel.`,
+    stayActivationMessage:
+      `Federal court stay in effect (as of April 27, 2026). ` +
+      `Colorado Attorney General will not enforce SB 205 pending rulemaking. ` +
+      `Colorado legislature is voting on SB 26-189 (simpler replacement) with deadline May 13. ` +
+      `Use this audit to prepare for either scenario.`,
   },
   illinois_aivia: {
     id:           "illinois_aivia",
@@ -167,16 +187,29 @@ function resolveJurisdictions(selectedIds, assessmentDate = new Date()) {
     r.enforced = assessmentDate >= j.effectiveDate;
 
     // Build Colorado-specific countdown message
-    if (id === "colorado_sb205" && !r.enforced) {
+    // NOTE: Enforcement is STAYED as of April 27, 2026. This message reflects stay status.
+    const stayDate = new Date("2026-04-27");
+    const isUnderStay = assessmentDate >= stayDate && assessmentDate < j.effectiveDate;
+    
+    if (id === "colorado_sb205" && isUnderStay) {
+      // We are currently under the federal stay
+      r.activeMessage = j.stayActivationMessage;
+      r.showCountdown = false;
+      r.daysRemaining = 0;
+      r.enforcementStatus = "STAYED";
+    } else if (id === "colorado_sb205" && !r.enforced) {
+      // Pre-stay period (should not occur, but handle for robustness)
       const msRemaining = j.effectiveDate - assessmentDate;
       const daysRemaining = Math.ceil(msRemaining / (1000 * 60 * 60 * 24));
       r.activeMessage = j.preEnforcementMessage(daysRemaining);
       r.showCountdown = true;
       r.daysRemaining = daysRemaining;
+      r.enforcementStatus = "PENDING";
     } else if (id === "colorado_sb205" && r.enforced) {
       r.activeMessage = j.postEnforcementMessage;
       r.showCountdown = false;
       r.daysRemaining = 0;
+      r.enforcementStatus = "ACTIVE";
     }
 
     resolved[id] = r;
@@ -503,7 +536,8 @@ function buildJurisdictionFlags(resolvedJurisdictions, riskScore) {
 const LEGAL_SUFFICIENCY_WALL = {
   message:
     "This self-assessment is not legally sufficient as an independent bias audit " +
-    "under NYC Local Law 144, Colorado SB205, or other applicable regulations. " +
+    "under NYC Local Law 144, Colorado SB 205 (or pending SB 26-189 if enacted), " +
+    "or other applicable regulations. " +
     "To achieve legal compliance, an independent auditor must certify your results.",
   cta: {
     text: "Schedule your free 20-minute compliance review with Aisha Stargill, " +
@@ -599,6 +633,12 @@ function runEngine(input) {
       coloradoEffectiveDate:  "2026-06-30",
       coloradoEnforced:       resolvedJurisdictions.colorado_sb205?.enforced ?? null,
       coloradoDaysRemaining:  resolvedJurisdictions.colorado_sb205?.daysRemaining ?? null,
+      coloradoEnforcementStatus: "STAYED",
+      coloradoStayDate:       "2026-04-27",
+      coloradoStayDetails:    "Federal court stay (xAI v. Weiser, 1:26cv1515, D. Colo.)",
+      coloradoPendingBill:    "SB 26-189 (Polis-backed replacement)",
+      coloradoLegislativeDeadline: "2026-05-13",
+      coloradoReplacementEffectiveDate: "2027-01-01 (if SB 26-189 passes)",
     },
   };
 }
